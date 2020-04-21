@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 首页 -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="/static/index/mui/css/style.css">
+    <link rel="stylesheet" href="/static/index/mui/css/mui.min.css">
+    <script src="/static/index/mui/js/app.js"></script>
+    <script src="/static/index/mui/js/mui.min.js"></script>
+    <script src="/static/index/mui/js/style.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <!-- 引入mui样式 -->
+    <!-- 自己的样式 -->
+</head>
+
+<body>
+
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">首页</h1>
+        <a href="{:url('index/Login/index')}" class="right-head">
+            {empty name="Request.session.user_name"}
+            暂无账号
+            {else /}
+            {$Request.session.user_name}
+            {/empty}
+        </a>
+    </header>
+    <div class="mui-content">
+        <div>我是首页</div>
+    </div>
+
+    <nav class="mui-bar mui-bar-tab">
+        <a onclick="home()" class="mui-tab-item mui-active">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a onclick="mi()" class="mui-tab-item">
+            <span class="mui-icon mui-icon-contact"></span>
+            <span class="mui-tab-label">我的</span>
+        </a>
+    </nav>
+
+</body>
+
+</html>

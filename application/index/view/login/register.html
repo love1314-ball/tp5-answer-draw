@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 注册页面 -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="/static/index/mui/css/style.css">
+    <link rel="stylesheet" href="/static/index/mui/css/mui.min.css">
+    <script src="/static/index/mui/js/app.js"></script>
+    <script src="/static/index/mui/js/mui.min.js"></script>
+    <script src="/static/index/mui/js/style.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <!-- 引入mui样式 -->
+    <!-- 自己的样式 -->
+    <style>
+        .area {
+            margin: 20px auto 0px auto;
+        }
+
+        .mui-input-group:first-child {
+            margin-top: 20px;
+        }
+
+        .mui-input-group label {
+            width: 22%;
+        }
+
+        .mui-input-row label~input,
+        .mui-input-row label~select,
+        .mui-input-row label~textarea {
+            width: 78%;
+        }
+
+        .mui-checkbox input[type=checkbox],
+        .mui-radio input[type=radio] {
+            top: 6px;
+        }
+
+        .mui-content-padded {
+            margin-top: 25px;
+        }
+
+        .mui-btn {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">首页</h1>
+        <a href="{:url('index/Login/index')}" class="right-head">
+            {empty name="Request.session.user_name"}
+            暂无账号
+            {else /}
+            {$Request.session.user_name}
+            {/empty}
+        </a>
+    </header>
+
+    <div class="mui-content">
+        <form class="mui-input-group">
+            <div class="mui-input-row">
+                <label>账号</label>
+                <input id='user_name' type="text" class="mui-input-clear mui-input" placeholder="请输入账号">
+            </div>
+            <div class="mui-input-row">
+                <label>手机号</label>
+                <input id='phone' type="phone" class="mui-input-clear mui-input" placeholder="请输入手机号">
+            </div>
+            <div class="mui-input-row">
+                <label>密码</label>
+                <input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+            </div>
+            <div class="mui-input-radio">
+                <label>性别</label>
+                <input name='gender' type="radio" checked class="mui-input-radio-noe" value="0"> 男
+                <input name='gender' type="radio" class="" value="1"> 女
+            </div>
+        </form>
+        <div class="mui-content-padded">
+            <button onclick="submit()" class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+        </div>
+        <div class="mui-content-padded">
+            <a href="{:url('index/Login/index')}" class="mui-btn mui-btn-block mui-btn-primary">已有账号去登录</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<!-- 注册页面 -->
+<script type="text/javascript">
+    function submit() {
+        var myname = document.getElementById("user_name").value;
+        var mypasswd = document.getElementById("password").value;
+        var phone = document.getElementById("phone").value;
+        var gender = $("input[name='gender']:checked").val();
+
+        //若当前input为空，则alert提醒
+
+        if (myname == "") {
+            mui.alert("账号不允许为空");
+            check = false;
+            return;
+        }
+        if (phone == "") {
+            mui.alert("手机号不允许为空");
+            check = false;
+            return;
+        } else {
+            if (!(/^1[3|5|7|8][0-9]\d{4,8}$/.test(phone))) {
+                mui.alert("手机号输入不正确");
+                return false;
+            }
+        }
+        if (mypasswd == "") {
+            mui.alert("密码不允许为空");
+            check = false;
+            return;
+        }
+        if (myname != "" && mypasswd != "" && phone != "") {
+            console.log(myname);
+            console.log(mypasswd);
+            console.log(phone);
+            console.log(gender);
+
+            $.ajax({
+                url: "{:url('index/Login/registration')}",
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    username: myname,
+                    password: mypasswd,
+                    phone: phone,
+                    gender: gender,
+                },
+                success: function (data) {
+                    if (data == "1") {
+                        mui.toast('注册成功', {
+                            duration: 'long',
+                            type: 'div'
+                        });
+                        setTimeout(function () {
+                            window.location.href = "{:url('index/Login/index')}";
+                        }, 1000);
+                    }
+                    if (data == "0") {
+                        mui.toast('用户已存在', {
+                            duration: 'long',
+                            type: 'div'
+                        });
+                    }
+                    if (data == "2") {
+                        mui.toast('网络错误', {
+                            duration: 'long',
+                            type: 'div'
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log("error");
+                }
+            });
+        }
+    }
+</script>
