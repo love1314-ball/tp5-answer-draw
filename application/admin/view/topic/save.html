@@ -58,8 +58,7 @@
 
                 </div>
             </div>
-            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加时间规则</button>
-            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除时间规则</button><br><br>
+
 
             {else /}
             <!-- 编辑页面 -->
@@ -97,10 +96,10 @@
                 </div>
                 {/foreach}
             </div>
-            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加时间规则</button>
-            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除时间规则</button><br><br>
 
             {/empty}
+            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加选项</button>
+            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除选项</button><br><br>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" type="submit" lay-submit="">保存</button>
@@ -112,7 +111,7 @@
 </div>
 
 
-<!-- 增加时间段js -->
+<!-- 增加选项 -->
 <script>
     var number = 0;
     var maximum = document.querySelector('.quantum'); //找到最大的div
