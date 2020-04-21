@@ -82,6 +82,8 @@ class Topic extends AdminBase {
             }
 
             $new_topic['choose_id'] = implode( ',', $choose );
+            $new_topic['topic_name'] = input('topic_name');
+
             //选项表的id
             $where['topic_id'] = $id;
             $where['choose_name'] = $topic['topic_correct'];
@@ -122,6 +124,6 @@ class Topic extends AdminBase {
 
     // 导入文件
     public function lead() {
-        return $this->fetch();
+        return $this->fetch('lead');
     }
 }
