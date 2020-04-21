@@ -1,15 +1,15 @@
-/*
+﻿/*
 Navicat MySQL Data Transfer
 
 Source Server         : 本地MySQL数据库
 Source Server Version : 50726
 Source Host           : localhost:3306
 Source Database       : tp5-answer-draw
-
+ 
 Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
-
+      
 Date: 2020-04-21 17:53:16
 */
 
