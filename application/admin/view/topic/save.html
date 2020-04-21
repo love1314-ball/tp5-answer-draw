@@ -1,0 +1,139 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">增加题</div>
+    <div class="layui-card-body">
+        <form action="{:url('admin/topic/ins')}" class="layui-form" method="post" enctype="multipart/form-data">
+            {empty name="id"}
+            <!-- 增加页面 -->
+
+
+
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">题目要求:</label>
+                <div class="layui-input-inline">
+                    <textarea rows="5" cols="45" name="topic_name" required lay-verify="required"
+                        placeholder="请输入题目的要求"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">正确答案：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="topic_correct" placeholder="输入正确答案" required="required"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">填写本题正确的答案</div>
+            </div>
+
+
+
+
+            <!-- 增加选项 -->
+            <div class="quantum">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选项A:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项A" required="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写选项A选项</div>
+
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选项B:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项B" required="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写选项D选项</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选项C:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项C" required="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写选项C选项/ -默认为三个选项</div>
+
+                </div>
+            </div>
+            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加时间规则</button>
+            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除时间规则</button><br><br>
+
+            {else /}
+            <!-- 编辑页面 -->
+
+            <input type="hidden" name="id" value="{$id}" id="">
+
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">题目要求:</label>
+                <div class="layui-input-inline">
+                    <textarea rows="5" cols="45" name="topic_name" required lay-verify="required"
+                        placeholder="请输入题目的要求">{$data.topic_name}</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">正确答案：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="topic_correct" value="{$data.topic_correct}" placeholder="输入正确答案"
+                        required="required" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">填写本题正确的答案</div>
+            </div>
+
+            <!-- 增加选项 -->
+            <div class="quantum">
+                {foreach name="choose" item="vo" empty="$empty"}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选项:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="choose_name[]" value="{$vo.choose_name}" placeholder="填写选项"
+                            required="required" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写选项</div>
+
+                </div>
+                {/foreach}
+            </div>
+            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加时间规则</button>
+            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除时间规则</button><br><br>
+
+            {/empty}
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" type="submit" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- 增加时间段js -->
+<script>
+    var number = 0;
+    var maximum = document.querySelector('.quantum'); //找到最大的div
+    var add = document.querySelector('#add'); //找到第三个第一个按钮
+    add.onclick = function () {
+        var newly = document.createElement('div');
+        maximum.appendChild(newly);
+        number++;
+        newly.innerHTML =
+            ` <div class="layui-form-item">
+                    <label class="layui-form-label">选项:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="choose_name[]" value="" placeholder="设置开始时间" required="required"
+                            class="layui-input">
+                    </div>
+                </div>`;
+    }
+    var reduce = document.querySelector('#reduce'); //找到最后一个按钮
+    reduce.onclick = function () {
+        var last = maximum.lastElementChild;
+        maximum.removeChild(last); //删除节点
+    }
+</script>
+{/block}
