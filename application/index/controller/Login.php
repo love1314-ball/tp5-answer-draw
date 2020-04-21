@@ -34,7 +34,7 @@ class Login extends IndexBase
             $sid = $pass['id'];
             $phone = $pass['phone'];
             if ( $pass ) {
-                session( 'user_name', $name );
+                session( 'user_name', $name );    
                 //session赋值
                 session( 'user_id', $sid );
                 //session赋值

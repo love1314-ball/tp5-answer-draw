@@ -9,6 +9,6 @@ class Index extends IndexBase
     public function index()
     {
         $username = session('user_name');
-        return $this->fetch('index');
+        return $this->fetch('index'); 
     }
 }

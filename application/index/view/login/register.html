@@ -55,11 +55,11 @@
         <a href="{:url('index/Login/index')}" class="right-head">
             {empty name="Request.session.user_name"}
             暂无账号
-            {else /}
+            {else /} 
             {$Request.session.user_name}
             {/empty}
         </a>
-    </header>
+    </header>              
 
     <div class="mui-content">
         <form class="mui-input-group">

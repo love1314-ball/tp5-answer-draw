@@ -22,9 +22,9 @@
         <h1 class="mui-title">首页</h1>
         <a href="{:url('index/Login/index')}" class="right-head">
             {empty name="Request.session.user_name"}
-            暂无账号
+            暂无账号 
             {else /}
-            {$Request.session.user_name}
+            {$Request.session.user_name}   
             {/empty}
         </a>
     </header>
