@@ -148,52 +148,56 @@ class Topic extends AdminBase {
             $excel_array = $obj_PHPExcel->getsheet( 0 )->toArray();
             array_shift( $excel_array );
             //删除第一个数组( 标题 );
-
             /**
             * 下标1为题目名字
             * 下标二为正确答案，
             * 然后后面全部为选项数据
             */
-            // for ( $i = 0; $i < count( $excel_array ) ;
-            // $i++ ) {
-
-            //     dump( $excel_array[$i] );
-            // }
 
             foreach ( $excel_array as $key => $value ) {
                 $excel_array[$key] = array_filter( $value );
                 //去除空数组
             }
-
+            $exist = 0;
+            //存在/插入失败
+            $inexistence = 0;
+            //不存在也就是成功
             foreach ( $excel_array as $ke => $val ) {
-                // dump( $val );
-                $topic['add_time'] = time();
-                $topic['topic_name'] = $val[0];
-                //题目名字
-                $topic['topic_correct'] = $val[1];
-                //题的答案
-                $topic_id = Db::name( 'topic' )->insertGetId( $topic );
-                //题的id
-                for ( $i = 2; $i < count( $val );
-                $i++ ) {
-                    //循环的全是答案
-                    $data['topic_id'] = $topic_id;
-                    $data['choose_name'] = $val[$i];
-                    $data['add_time'] = time();
-                    $choose[] = Db::name( 'choose' )->insertGetId( $data );
-                    //选项的id
+                $already = Db::name( 'topic' )->where( 'topic_name', $val[0] )->find();
+                if ( !$already ) {
+                    // dump( $val );
+                    $topic['add_time'] = time();
+                    $topic['topic_name'] = $val[0];
+                    //题目名字
+                    $topic['topic_correct'] = $val[1];
+                    //题的答案
+                    $topic_id = Db::name( 'topic' )->insertGetId( $topic );
+                    ++$inexistence;
+                    //题的id
+                    for ( $i = 2; $i < count( $val );
+                    $i++ ) {
+                        //循环的全是答案
+                        $data['topic_id'] = $topic_id;
+                        $data['choose_name'] = $val[$i];
+                        $data['add_time'] = time();
+                        $choose[] = Db::name( 'choose' )->insertGetId( $data );
+                        //选项的id
+                    }
+                    $new_topic['choose_id'] = implode( ',', $choose );
+                    unset( $choose );
+                    //选项表的id
+                    $where['topic_id'] = $topic_id;
+                    $where['choose_name'] = $topic['topic_correct'];
+                    $new_topic['choose_correct_id'] = Db::name( 'choose' )->where( $where )->value( 'id' );
+                    //选项表中正确的id
+                    $up = Db::name( 'topic' )->where( 'id', $topic_id )->update( $new_topic );
+                } else {
+                    ++$exist;
+                    $up = true;
                 }
-                $new_topic['choose_id'] = implode( ',', $choose );
-                unset($choose);
-                //选项表的id
-                $where['topic_id'] = $topic_id;
-                $where['choose_name'] = $topic['topic_correct'];
-                $new_topic['choose_correct_id'] = Db::name( 'choose' )->where( $where )->value( 'id' );
-                //选项表中正确的id
-                $up = Db::name( 'topic' )->where( 'id', $topic_id )->update( $new_topic );
             }
             if ( $up ) {
-                $this->success( '导入成功!', 'admin/topic/index' );
+                $this->success( "导入成功 $inexistence 条 , 数据库存在 $exist 条", 'admin/topic/index' );
             } else {
                 $this->error( '导入失败' );
             }
