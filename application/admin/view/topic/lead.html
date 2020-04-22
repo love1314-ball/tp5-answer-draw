@@ -47,8 +47,12 @@
         <form action="{:url('admin/Topic/lead_add')}"  method="post" enctype="multipart/form-data">
 
             <div>导入的文件为xlsx表格才可以格式要正确，下面是例子格式：
-            <img src="/static/image/xlsx.png" alt="">
+            <img src="/static/image/xlsx.png" alt="" width="100%" height="150px">
             </div>
+
+            <div>例子下载：
+                <a style="color: red;" href="{:url('admin/topic/below')}">下载例子</a>
+            </div><br>
             <div class="layui-form-item">
                 <label class="layui-form-label">选导入数据</label>
                 <div class="layui-input-block">

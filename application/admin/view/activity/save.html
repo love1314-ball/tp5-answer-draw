@@ -1,0 +1,191 @@
+<link rel="stylesheet" href="__ADMIN__/css/daterangepicker.css">
+<script src="__ADMIN__/js/daterangepicker.min.js"></script>
+<script src="__ADMIN__/js/daterangepicker.min.js"></script>
+{extend name="base" /}
+{block name="body"}
+<style>
+    .file {
+        position: relative;
+        display: inline-block;
+        background: #D0EEFF;
+        border: 1px solid #99D3F5;
+        border-radius: 4px;
+        padding: 4px 12px;
+        overflow: hidden;
+        color: #1E88C7;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 20px;
+    }
+
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
+
+    .left {
+        margin-left: 5%;
+    }
+
+    .time {
+        width: 770px;
+        height: auto;
+        background-color: antiquewhite;
+    }
+</style>
+<div class="layui-card">
+    <div class="layui-card-header">增加活动</div>
+    <div class="layui-card-body">
+        <form action="{:url('admin/Activity/ins')}" class="layui-form" method="post" enctype="multipart/form-data">
+            {empty name="id"}
+            <!-- 增加页面 -->
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">活动名字：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="activity_name" placeholder="输入活动名字" lay-verify="required"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">填写活动的名字</div>
+            </div>
+
+
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">活动介绍:</label>
+                <div class="layui-input-inline">
+                    <textarea rows="5" cols="45" name="activity_introduce" lay-verify="required"
+                        placeholder="请输入活动的介绍"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片介绍：</label>
+                <div class="layui-input-inline">
+                    <input type="file" class="file" name="activity_picture" onchange="PreviewImage(this)"
+                        lay-verify="required">
+                    <div id="imgPreview" class="reader">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">上传图片的介绍</div>
+                </div>
+            </div>
+
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">开始时间：</label>
+                <div class="layui-input-inline">
+                    <input type="date" name="begin_time" class="layui-input" lay-verify="required">
+                </div>
+                <div class="layui-form-mid layui-word-aux">选择开始时间</div>
+            </div>
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">结束时间：</label>
+                <div class="layui-input-inline">
+                    <input type="date" name="finish_time" class="layui-input" lay-verify="required">
+                </div>
+                <div class="layui-form-mid layui-word-aux">选择结束时间</div>
+            </div>
+
+
+            {else /}
+            <!-- 编辑页面 -->
+
+            <input type="hidden" name="id" value="{$id}" id="">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">活动名字</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data.activity_name}" name="activity_name" placeholder="输入活动名字"
+                        required="required" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">填写活动的名字</div>
+            </div>
+
+
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">活动介绍:</label>
+                <div class="layui-input-inline">
+                    <textarea rows="5" cols="45" name="activity_introduce" required lay-verify="required"
+                        placeholder="请输入活动的介绍">{$data.activity_introduce}</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片介绍：</label>
+                <div class="layui-input-inline">
+                    <input type="file" class="file" name="activity_picture" onchange="PreviewImage(this)" >
+                    <div id="imgPreview" class="reader">
+                        <div class="layui-form-mid layui-word-aux">不上传为下面那张上传顶替这一张</div>
+                        <input type="hidden" name="former" class="layui-input" value="{$data.activity_picture}"
+                            readonly>
+                        <img width='120px' height='100px' src="{$data.activity_picture}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">开始时间：</label>
+                <div class="layui-input-inline">
+                    <input type="date" name="begin_time" value="{:date('Y-m-d',$data.begin_time)}" class="layui-input"
+                        lay-verify="required">
+                </div>
+                <div class="layui-form-mid layui-word-aux">选择开始时间</div>
+            </div>
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">结束时间：</label>
+                <div class="layui-input-inline">
+                    <input type="date" name="finish_time" value="{:date('Y-m-d',$data.finish_time)}" class="layui-input"
+                        lay-verify="required">
+                </div>
+                <div class="layui-form-mid layui-word-aux">选择结束时间</div>
+            </div>
+
+
+            {/empty}
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" type="submit" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    function PreviewImage(imgFile) {
+        var filextension = imgFile.value.substring(imgFile.value.lastIndexOf("."), imgFile.value.length);
+        filextension = filextension.toLowerCase();
+        if ((filextension != '.jpg') && (filextension != '.gif') && (filextension != '.jpeg') && (filextension != '.png') && (filextension != '.bmp')) {
+            alert("对不起，系统仅支持标准格式的照片，请您调整格式后重新上传，谢谢 !");
+            imgFile.focus();
+        } else {
+            var path;
+            if (document.all) //IE
+            {
+                imgFile.select();
+                path = document.selection.createRange().text;
+
+                document.getElementById("imgPreview").innerHTML = "";
+                document.getElementById("imgPreview").style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")"; //使用滤镜效果
+            } else //FF
+            {
+                path = window.URL.createObjectURL(imgFile.files[0]);
+                document.getElementById("imgPreview").innerHTML = "<img id='img1' width='120px' height='100px' src='" + path + "'/>";
+                // document.getElementById("img1").src = path;
+            }
+        }
+    }
+</script>
+
+
+
+{/block}

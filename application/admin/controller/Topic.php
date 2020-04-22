@@ -205,7 +205,29 @@ class Topic extends AdminBase {
             //上传失败获取错误信息
             $this->error( $file->getError() );
         }
-
     }
+
+
+    // 下载格式文件
+    public function below(){
+        $file = '/Excel/默认表.xlsx';//文件地址
+        //str_replace为了严谨点嘛，不要也可以
+        $file_lj = str_replace("\\","/",ROOT_PATH.'public');
+        $files = $file_lj.$file;
+        if(!file_exists($files)){
+            return "文件不存在";
+        }else {
+            //打开文件
+            $file1 = fopen($files, "r");
+            //输入文件标签
+            Header("Content-type: application/octet-stream");
+            Header("Accept-Ranges: bytes");
+            Header("Accept-Length: " . filesize($files));
+            Header("Content-Disposition: attachment; filename=例子表.xlsx");
+            echo fread($file1, filesize($files));
+            fclose($file1);
+        }
+   }
+
 
 }
