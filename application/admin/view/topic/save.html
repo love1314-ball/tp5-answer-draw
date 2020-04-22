@@ -18,7 +18,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">正确答案：</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="topic_correct" placeholder="输入正确答案" required="required"
+                    <input type="text" name="topic_correct" placeholder="输入正确答案" lay-verify="required"
                         class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">填写本题正确的答案</div>
@@ -32,7 +32,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">选项A:</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="choose_name[]" value="" placeholder="填写选项A" required="required"
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项A" lay-verify="required"
                             class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">填写选项A选项</div>
@@ -41,7 +41,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">选项B:</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="choose_name[]" value="" placeholder="填写选项B" required="required"
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项B" 
                             class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">填写选项D选项</div>
@@ -49,11 +49,10 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">选项C:</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="choose_name[]" value="" placeholder="填写选项C" required="required"
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项C" 
                             class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">填写选项C选项/ -默认为三个选项</div>
-
                 </div>
             </div>
 

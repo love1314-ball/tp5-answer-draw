@@ -1,0 +1,123 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">增加活动</div>
+    <div class="layui-card-body">
+        <form action="{:url('admin/Activity/rule_ins')}" class="layui-form" method="post" enctype="multipart/form-data">
+            {empty name="id"}
+            <!-- 增加页面 -->
+
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">选择活动：</label>
+                <div class="layui-input-inline">
+                    <select name="activity_id" lay-verify="">
+                        <option value="">选择活动</option>
+                        {foreach name="data" item="v" empty="$empty"}
+                        <option value="{$v.id}">{$v.activity_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="layui-form-mid layui-word-aux">选择一个活动编辑规则</div>
+            </div>
+
+
+            <!-- 增加规则 -->
+            <div class="quantum">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">抽奖次数:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                    <label class="layui-form-label">概率:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率(小数格式)</div>
+                </div>
+            </div>
+
+
+            {else /}
+            <!-- 编辑页面 -->
+
+            <input type="hidden" name="id" value="{$id}" id="">
+            <div class="layui-form-item maximum">
+                <label class="layui-form-label">选择活动：</label>
+                <div class="layui-input-inline">
+                    <select name="activity_id" lay-verify="">
+                        <option value="{$approve.id}">{$approve.activity_name}</option>
+                        {foreach name="data" item="v" empty="$empty"}
+                        <option value="{$v.id}">{$v.activity_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="layui-form-mid layui-word-aux">选择一个活动编辑规则</div>
+            </div>
+
+            <div class="quantum">
+                {foreach name="tacitly" item="vo" empty="$empty"}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">抽奖次数:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_number[]" value="{$vo.activity_number}" placeholder="填写抽奖次数"
+                            lay-verify="required" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                    <label class="layui-form-label">概率:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_probability[]" value="{$vo.activity_probability}"
+                            placeholder="填写概率" lay-verify="required" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率(小数格式)</div>
+                </div>
+                {/foreach}
+            </div>
+
+            {/empty}
+            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加规则</button>
+            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除规则</button><br><br>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" type="submit" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 增加规则 -->
+<script>
+    var number = 0;
+    var maximum = document.querySelector('.quantum'); //找到最大的div
+    var add = document.querySelector('#add'); //找到第三个第一个按钮
+    add.onclick = function () {
+        var newly = document.createElement('div');
+        maximum.appendChild(newly);
+        number++;
+        newly.innerHTML =
+            ` <div class="layui-form-item">
+                    <label class="layui-form-label">抽奖次数:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                    <label class="layui-form-label">概率:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率</div>
+                </div>`;
+    }
+    var reduce = document.querySelector('#reduce'); //找到最后一个按钮
+    reduce.onclick = function () {
+        var last = maximum.lastElementChild;
+        maximum.removeChild(last); //删除节点
+    }
+</script>
+{/block}

@@ -1,0 +1,41 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+       
+        <a href="{:url('admin/Activity/activity_rule_add')}" class="layui-btn"><i class="fa fa-plus-circle"></i> 添加规则</a>
+
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>活动的名称</th>
+                    <th>抽奖次数</th>
+                    <th>抽奖概率</th>
+                    <th>增加时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach name="list" item="v" empty="$empty"}
+                <tr>
+                    <td>{$v.r_id}</td>
+                    <td>{$v.activity_name}</td>
+                    <td>{$v.activity_number}</td>
+                    <td>{$v.activity_probability}</td>
+                    <td>{:date('Y-m-d',$v.add_time)}</td>
+                    <td>
+                        <a href="{:url('admin/activity/edit_rule', ['id' => $v.activity_id])}"
+                            class="layui-btn layui-btn-xs layui-btn-normal"><i class="fa fa-edit"></i> 编辑</a>
+                        <a href="{:url('admin/activity/rule_del', ['id' => $v.r_id])}"
+                            class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i>
+                            删除</a>
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

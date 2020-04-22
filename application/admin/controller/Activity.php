@@ -21,11 +21,11 @@ class Activity extends AdminBase {
             $where['activity_name'] = ['like', '%' . $param['activity_name'] . '%'];
         }
         if ( isset( $param['begin_time'] ) ) {
-            $begin_time = strtotime($param['begin_time']);
+            $begin_time = strtotime( $param['begin_time'] );
             $where['begin_time'] =  ['like', '%' . $begin_time . '%'];
         }
         if ( isset( $param['finish_time'] ) ) {
-            $finish_time = strtotime($param['finish_time']);
+            $finish_time = strtotime( $param['finish_time'] );
             $where['finish_time'] =  ['like', '%' . $finish_time . '%'];
         }
         return $this->fetch( 'index', ['list' => model( 'activity' )->order( 'id desc' )->where( $where )->paginate( config( 'page_number' ) )] );
@@ -46,6 +46,17 @@ class Activity extends AdminBase {
             } else {
                 $this->error( $this->errorMsg );
             }
+        }
+    }
+
+    public function rule_del()
+ {
+        $id = input( 'id' );
+        $del = Db::name( 'activity_rule' )->delete( $id );
+        if ( $del ) {
+            $this->success( '删除成功', 'admin/activity/activity_rule' );
+        } else {
+            $this->error( '删除失败' );
         }
     }
 
@@ -103,6 +114,104 @@ class Activity extends AdminBase {
         } else {
             $this->error( '更新失败' );
         }
+    }
+
+    //规则设置
+
+    public function activity_rule()
+ {
+        $param = $this->request->param();
+        ///接收input框中的值
+        $where = [];
+        if ( isset( $param['activity_name'] ) ) {
+            $where['activity_name'] = ['like', '%' . $param['activity_name'] . '%'];
+        }
+        if ( isset( $param['begin_time'] ) ) {
+            $begin_time = strtotime( $param['begin_time'] );
+            $where['begin_time'] =  ['like', '%' . $begin_time . '%'];
+        }
+        if ( isset( $param['finish_time'] ) ) {
+            $finish_time = strtotime( $param['finish_time'] );
+            $where['finish_time'] =  ['like', '%' . $finish_time . '%'];
+        }
+        return $this->fetch( 'activity_rule', ['list' => model( 'ActivityRule' )
+        ->alias( 'a' )
+        ->join( 'activity w', 'a.activity_id = w.id' )
+        ->group( 'add_time' )
+        ->where( $where )
+        ->field( 'a.*, w.* , a.id r_id , w.id a_id' )
+        ->order( 'r_id desc' )
+        ->paginate( config( 'page_number' ) )] );
+
+    }
+
+    //增加规则
+
+    public function activity_rule_add()
+ {
+        $id = input( 'id' );
+        $data = Db::name( 'activity' )->select();
+        $this->assign( 'id', $id );
+        $this->assign( 'data', $data );
+        return $this->fetch( 'rule_add' );
+
+    }
+
+    //进库
+
+    public function rule_ins()
+ {
+        $id = input( 'id' );
+        $activity_rule['activity_id'] = input( 'activity_id' );
+        $activity_rule['add_time'] = time();
+        $activity_number = input( 'activity_number/a' );
+        $activity_probability =  input( 'activity_probability/a' );
+
+        if ( $id ) {
+            $all = Db::name('activity_rule')->where('activity_id',$id)->select();
+            foreach ($all as $key => $value) {
+               Db::name('activity_rule')->delete($value['id']);
+            }
+            for ( $i = 0; $i < count( $activity_number ) ;
+            $i++ ) {
+                $activity_rule['activity_number'] = $activity_number[$i];
+                $activity_rule['activity_probability'] = $activity_probability[$i];
+                $ins = Db::name( 'activity_rule' )->insert( $activity_rule );
+            }
+            if ( $ins ) {
+                $this->success( '更改成功', 'admin/Activity/activity_rule' );
+            } else {
+                $this->error( '更改失败' );
+            }
+        } else {
+            for ( $i = 0; $i < count( $activity_number ) ;
+            $i++ ) {
+
+                $activity_rule['activity_number'] = $activity_number[$i];
+                $activity_rule['activity_probability'] = $activity_probability[$i];
+                $ins = Db::name( 'activity_rule' )->insert( $activity_rule );
+            }
+            if ( $ins ) {
+                $this->success( '插入成功', 'admin/Activity/activity_rule' );
+            } else {
+                $this->error( '插入失败' );
+            }
+        }
+
+    }
+    // 规则编辑
+
+    public function edit_rule()
+ {
+        $id = input( 'id' );
+        $data = Db::name( 'activity' )->select();
+        $tacitly = Db::name( 'activity_rule' )->where( 'activity_id', $id )->select();
+        $approve = Db::name( 'activity' )->where( 'id', $tacitly[0]['activity_id'] )->find();
+        $this->assign( 'id', $id );
+        $this->assign( 'tacitly', $tacitly );
+        $this->assign( 'approve', $approve );
+        $this->assign( 'data', $data );
+        return $this->fetch( 'rule_add' );
     }
 
 }
