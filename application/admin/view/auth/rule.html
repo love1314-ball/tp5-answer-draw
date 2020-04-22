@@ -91,6 +91,7 @@ $('#delRule').on('click', function(){
                 type: 'post',
                 dataType: 'json',
                 success: function(result) {
+                    console.log(result);
                     if (result.code === 1 && result.url != '') {
                         setTimeout(function() {
                             location.href = result.url;
