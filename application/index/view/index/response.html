@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>答题页面</title>
+    <title>答题</title>
     <meta name="viewport"
         content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" href="/static/index/mui/css/style.css">
@@ -15,13 +15,14 @@
     <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
     <!-- 引入mui样式 -->
     <!-- 自己的样式 -->
+    <link rel="stylesheet" href="/static/index/my/response.css">
 </head>
 
 <body>
 
     <header class="mui-bar mui-bar-nav">
         <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-        <h1 class="mui-title">首页</h1>
+        <h1 class="mui-title">答题</h1>
         <a href="{:url('index/Login/index')}" class="right-head">
             {empty name="Request.session.user_name"}
             暂无账号
@@ -31,15 +32,22 @@
         </a>
     </header>
     <div class="mui-content">
-        <div class="lunbo">
-            <!-- <img class="lunbo-img" src="img/shouye1.png" /> -->
-            <div class="mui-slider">
-                <div class="mui-slider-group mui-slider-loop">
-                </div>
-                <div class="mui-slider-indicator">
-                </div>
-            </div>
+        <h4>剩余时间为：<span id="timeout"></span></h4>  
+
+        {foreach name="all" item="vo" key="ke"}
+        {/foreach}
+        <div>题目:{$vo.topic_name}  (单选题)</div>
+        <input type="radio" name="" id="">  A: {$vo.topic_name} 
+        
+        <div class="subject">
+            {foreach name="all" item="v" key="k"}
+            <a href="{$v.url}">第{$k+1}题</a>
+            {/foreach}
         </div>
+
+        <a href="#">下一题</a>
+
+
     </div>
 
     <nav class="mui-bar mui-bar-tab">
@@ -57,3 +65,36 @@
 
 </html>
 
+<script type="text/javascript">
+
+    // localStorage.setItem('arr', arr);
+
+
+
+    // var alls = localStorage.getItem('arr');
+    function jumpurl() {
+        // alls.splice(1,1);
+        // location = "https://dev.dcloud.net.cn/mui/ui/#gallery";
+    }
+
+    // console.log(alls);
+    (function () {
+        // setTimeout('jumpurl()', 30000);
+        // jumpurl();
+    })();
+
+    var timestart = 30;
+    var timestep = -1;
+    var timeID;
+    function timecount() {
+        document.getElementById("timeout").innerHTML = timestart;
+        timestart += timestep;
+        if (timestart < 0) {
+            timestart = 30;
+            //倒计时为0时执行xxxx方法   
+        }
+        timeID = setTimeout("timecount()", 1000);
+    }
+    timecount();
+</script>
+</head>
