@@ -77,12 +77,14 @@
         将题插入到数据库
         */
         var num = localStorage.getItem('count');
+        num = Number(num);
         var number = num + 1;//用户答题的次数（当为10的时候判断他的正确率是否可以去抽奖）
         var choose_id = $("#choose_id").val();//所有选项id
         var topic_id = $("#topic_id").val();//本题的id
         var choose = $("#choose").val();//用户选择的答案ID
         var answer_id = $("#answer_id").val();//活动的id
         var answer_uniqueness = $("#answer_uniqueness").val();//唯一标识
+        console.log(number);
         $.ajax({
             type: 'POST',
             url: "{:url('index/index/in_answer')}",
@@ -96,6 +98,14 @@
             dataType: 'json',
             success: function (ins) {
                 // console.log(ins);
+                if(ins == 6){
+                    mui.alert('恭喜你你可以抽奖了');
+                    window.location.href = "{:url('index/index/draw')}";
+                }
+                if(ins == 7){
+                    mui.toast('对不起你无法抽奖');
+                    window.location.href = "{:url('index/index/index')}";
+                }
                 if (ins[0] == 0) {
                     if (ins[1] == 0) {
                         mui.toast('答题成功，答题错误了😥');

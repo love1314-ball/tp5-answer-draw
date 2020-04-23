@@ -103,65 +103,83 @@ class Index extends IndexBase
     public function in_answer()
     {
         $number = input('number');
-        $data['topic_id'] = input('topic_id');
-        //题的id
-        $data['choose_id'] = input('choose');
-        //用户选项的id
-        $data['answer_id'] = input('answer_id');
-        //活动的id
-        $data['user_name'] = session('user_name');
-        //用户名
-        $data['user_id'] = session('user_id');
-        //用户id
-        $data['answer_uniqueness'] = input('answer_uniqueness');
-        //唯一标识
-        $data['add_time'] = date('Y-m-d', time());
-        $data['answer_next'] = "1";//这里测试数据为1
-        $topic = Db::name('topic')->where('id', $data['topic_id'])->find();
-        if ($data['choose_id'] == $topic['choose_correct_id']) {
-            $data['answer_whether'] = 1;//答对
-            $data['user_correct'] = 1;//答对
-            $whether = 1;
-        } else {
-            $data['answer_whether'] = 0;
-            $data['user_correct'] = 0;
-            $whether = 0;
-        }
-        $ins = Db::name('answer')->insert($data);
+
+        if ($number < 11) {
+            $data['topic_id'] = input('topic_id');
+            //题的id
+            $data['choose_id'] = input('choose');
+            //用户选项的id
+            $data['answer_id'] = input('answer_id');
+            //活动的id
+            $data['user_name'] = session('user_name');
+            //用户名
+            $data['user_id'] = session('user_id');
+            //用户id
+            $data['answer_uniqueness'] = input('answer_uniqueness');
+            //唯一标识
+            $data['add_time'] = date('Y-m-d', time());
+            $data['answer_next'] = "1";//这里测试数据为1
+            $topic = Db::name('topic')->where('id', $data['topic_id'])->find();
+            if ($data['choose_id'] == $topic['choose_correct_id']) {
+                $data['answer_whether'] = 1;//答对
+                $data['user_correct'] = 1;//答对
+                $whether = 1;
+            } else {
+                $data['answer_whether'] = 0;
+                $data['user_correct'] = 0;
+                $whether = 0;
+            }
+            $ins = Db::name('answer')->insert($data);
+            //正确答案
 
 
-        //正确答案
-        $tures = $topic['topic_correct'];
-        if ($ins) {
-            $arr = [0, $whether, $tures];
-            return $arr;
-        } else {
-            $arr = [1, $whether, $tures];
-            return $arr;
-        }
-        if ($number == 10) {
-            $new_time = date('Y-m-d', time());
-            $where['answer_uniqueness'] = $data['answer_uniqueness'];
-            $where['user_id'] = $data['user_id'];
-            $where['add_time'] = $new_time;//必须为当天的时间才可
+            if ($number == 10) {
+                $new_time = date('Y-m-d', time());
+                $where['answer_uniqueness'] = $data['answer_uniqueness'];
+                $where['user_id'] = $data['user_id'];
+                $where['add_time'] = $new_time;//必须为当天的时间才可
+                $lottery = Db::name('answer')->where($where)->sum('user_correct');
+                if ($lottery > 8) {
+                    return 6;//可抽奖
+                } else {
+                    return 7;
+                }
+            }
+            $tures = $topic['topic_correct'];
+            if ($ins) {
+                $arr = [0, $whether, $tures];
+                return $arr;
+            } else {
+                $arr = [1, $whether, $tures];
+                return $arr;
+            }
 
-            $lottery = Db::name('answer')->where($where)->sum('user_correct');
-            return $lottery;
-//            uniqueness //唯一标识
         }
+
+
     }
 
     public function test()
     {
+        if ($number = 10) {
+            $new_time = date('Y-m-d', time());
+            $where['answer_uniqueness'] = 1587646206;
+            $where['user_id'] = 2020;
+            $where['add_time'] = $new_time;//必须为当天的时间才可
+            $lottery = Db::name('answer')->where($where)->sum('user_correct');
+            if ($lottery > 8) {
+                return 6;//可抽奖
+            } else {
+                return 7;
+            }
+        }
 
-        $new_time = date('Y-m-d', time());
-        $where['answer_uniqueness'] = 1587645536;
-        $where['user_id'] = 2020;
-        $where['add_time'] = $new_time;//必须为当天的时间才可
-
-        $lottery = Db::name('answer')->where($where)->sum('user_correct');
-        return $lottery;
     }
 
+    //抽奖页面
+    public function draw()
+    {
+
+    }
 
 }
