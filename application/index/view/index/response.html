@@ -45,7 +45,9 @@
             <a id="previous-css">上题答案:<span id="previous"></span></a>
             <a id="descend" onclick="private()">下一题</a>
         </div>
-        <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面</p>
+        <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
+        <div onclick="text()">6666666666666666</div>
+        <div onclick="aaaa()">种植</div>
         <input type="hidden" name="choose_id" id="choose_id" value="">
         <input type="hidden" name="topic_id" id="topic_id" value="">
         <input type="hidden" name="choose" id="choose" value="">
@@ -71,6 +73,7 @@
     function submit() {
         count();
         jumpurl();
+        timecount();
     }
 </script>
 
@@ -80,6 +83,7 @@
     function private() {
         count();
         jumpurl();
+        timecount();
     }
 </script>
 
@@ -165,77 +169,58 @@
     }
 
     (function () {
-        // setInterval(private, 30000);//30秒后执行下一题
         jumpurl();
     })();
 </script>
 
+<script>
+    function text() {
+        timecount()
+    }
+    function aaaa() {
+        reset();
+        timecount()
+    }
+</script>
 
 <!--倒计时问题-->
 <script>
-    // var timestart = 30;
-    // var timestep = -1;
-    // var timeID;
-    // function timecount() {
-    //     document.getElementById("timeout").innerHTML = timestart;
-    //     timestart += timestep;
-    //     if (timestart < 0) {
-    //         timestart = 30;
-    //         //倒计时为0时执行xxxx方法   
-    //     }
-    //     timeID = setTimeout("timecount()", 1000);
-    // }
-    // timecount();
-
-
-    var maxtime;
-    if (window.name == '') {
-        maxtime = 1 * 60;
-    } else {
-        maxtime = window.name;
+    var timestart = 30;
+    function reset() {
+        var timestart = 30;
     }
-
-    function CountDown() {
-        if (maxtime >= 0) {
-            minutes = Math.floor(maxtime / 60);
-            seconds = Math.floor(maxtime % 60);
-            msg = seconds + "秒";
-            document.getElementById("timeout").innerHTML = msg;
-            if (maxtime == 5 * 60) alert('注意，还有5分钟!');
-            --maxtime;
-            window.name = maxtime;
+    var timestep = -1;
+    function timecount() {
+        document.getElementById("timeout").innerHTML = timestart;
+        timestart += timestep;
+        if (timestart < 0) {
+            timestart = 30;
+            //倒计时为0时执行xxxx方法   
         }
-        else {
-            clearInterval(timer);
-            alert("考试时间到，结束!");
-        }
+        setTimeout("timecount()", 1000);
     }
-    timer = setInterval("CountDown()", 1000);
-
-
-
 
 </script>
 
 <!--防止页面刷新的问题-->
 <script type="text/javascript">
-    // document.onkeydown = function (e) {
-    //     var ev = window.event || e;
-    //     var code = ev.keyCode || ev.which;
-    //     if (code == 116) {
-    //         ev.keyCode ? ev.keyCode = 0 : ev.which = 0;
-    //         cancelBubble = true;
-    //         return false;
-    //     }
-    // } //禁止f5刷新
-    // document.οncοntextmenu = function () {
-    //     return false
-    // };//禁止右键刷新
-    //
-    // function RunOnBeforeUnload() {
-    //     window.onbeforeunload = function () {
-    //         return '请不要刷新页面!';
-    //     }
-    // }
+    document.onkeydown = function (e) {
+        var ev = window.event || e;
+        var code = ev.keyCode || ev.which;
+        if (code == 116) {
+            ev.keyCode ? ev.keyCode = 0 : ev.which = 0;
+            cancelBubble = true;
+            return false;
+        }
+    } //禁止f5刷新
+    document.οncοntextmenu = function () {
+        return false
+    };//禁止右键刷新
+
+    function RunOnBeforeUnload() {
+        window.onbeforeunload = function () {
+            return '请不要刷新页面!';
+        }
+    }
 </script>
 </head>
