@@ -34,9 +34,13 @@ class Index extends IndexBase {
         $finish_time = date( 'Y-m-d', $activity['finish_time'] ) ;
         if ( $time < $begin_time ) {
             return 0;
+            echo '<script>alert("活动暂时没开启");window.history.go(-1); </script>';
+            exit;
         }
         if ( $time > $finish_time ) {
             return 1;
+            echo '<script>alert("活动已过期");window.history.go(-1); </script>';
+            exit;
         }
         $all = session( 'topic_all' );
         if ( !$all ) {
@@ -68,11 +72,24 @@ class Index extends IndexBase {
 
     public function response() {
 
-        $input = input();
-        dump( $input );
+        // $input = input();
+        // dump( $input );
         // exit;
         return $this->fetch( 'response' );
-
     }
+
+     // 显示题的内容（不重复）
+
+     public function particular()
+     {
+         $choose_id = input('choose_id');
+         $topic_id = input('topic_id');
+         $choose_id = '489,490,491,492,493';
+         $al = explode(",", $al);
+         for ($i=0; $i < count($al); $i++) { 
+             $data[] = Db::name('choose')->where('id',$al[$i])->find();
+         }
+        return json($data);
+     }
 
 }

@@ -84,6 +84,7 @@
 <script>
 
     function ids(id) {
+        localStorage.removeItem('count');
         var answer = id.getElementsByTagName('input')[0].value;
         mui.toast("请等待");
         $.ajax({
@@ -107,7 +108,6 @@
                     //存入 
                     sessionStorage.all = data;
                     //读取 
-                   
                     window.location.href = "{:url('index/index/response')}";
                 }
             },

@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/static/index/my/response.css">
 </head>
 
-<body>
+<body onload="RunOnBeforeUnload()">
 
     <header class="mui-bar mui-bar-nav">
         <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
@@ -33,19 +33,12 @@
     </header>
     <div class="mui-content">
         <h4>剩余时间为：<span id="timeout"></span></h4>  
+        <div>题目名字：<span id="topic"></span></div>
 
-        {foreach name="all" item="vo" key="ke"}
-        {/foreach}
-        <div>题目:{$vo.topic_name} (单选题)</div>
-        <input type="radio" name="" id=""> A: {$vo.topic_name}
-
-        <div class="subject">
-            {foreach name="all" item="v" key="k"}
-            <a href="{$v.url}">第{$k+1}题</a>
-            {/foreach}
-        </div>
 
         <a href="#">下一题</a>
+        <input type="text" name="choose_id" id="choose_id" value="">
+        <input type="text" name="topic_id" id="topic_id" value="">
 
 
     </div>
@@ -66,22 +59,68 @@
 </html>
 
 <script type="text/javascript">
-
-
+    function count() {
+        // 当前浏览器是否支持localStorage
+        if (window.localStorage) {
+            // 是否已经有记录了，如果有进入操作
+            if (window.localStorage.getItem("count")) {
+                //拿出key对应的value， 因为存储进去的是字符串。
+                var c = parseInt(window.localStorage.getItem("count"));
+                // 设置key，value加1
+                window.localStorage.setItem("count", c + 1);
+                // console.log(parseInt(window.localStorage.getItem("count")));
+            } else {
+                //如果没有检查到key, 那肯定没设置，那就让他默认为0
+                window.localStorage.setItem("count", 0);
+            }
+        }
+    }
+    count();
     data = sessionStorage.all;
     //重新转换为对象 
     all = JSON.parse(data);
     console.log(all);
-
     function jumpurl() {
-        // location = "https://dev.dcloud.net.cn/mui/ui/#gallery";
+        var num = localStorage.getItem('count');
+        for (i = 0; i < 1; i++) {
+            $("#topic").text(all[num].topic_name);
+            $("#choose_id").val(all[num].choose_id);
+            $("#topic_id").val(all[num].id);
+            console.log(all[num]);
+        }
+        // location = "http://www.tp5-answer-draw.com/index/index/response.html";
+        //请求选项
+        
+        var choose_id = $("#choose_id").val();//所有选项的id
+        var topic_id = $("#topic_id").val();//题的id
+        console.log(choose_id);
+        console.log(topic_id);
+        $.ajax({
+            type: 'POST',
+            url: "{:url('index/index/particular')}",
+            data: {
+                choose_id: choose_id,
+                topic_id: topic_id,
+                //将name值在赋给一个名字为names后面接收就要接收$names=$_POST[‘names’];这个样子。
+            },
+            dataType: 'json',
+            success: function (choose) {
+                console.log(choose);
+            },
+            error: function () {
+                console.log("error");
+            }
+        });
     }
 
     (function () {
         // setTimeout('jumpurl()', 30000);
-        // jumpurl();
+        // setTimeout(count(), 30000);//30秒然后执行记录次数
+        jumpurl();
     })();
+</script>
 
+<script>
     var timestart = 30;
     var timestep = -1;
     var timeID;
@@ -95,5 +134,26 @@
         timeID = setTimeout("timecount()", 1000);
     }
     timecount();
+</script>
+
+
+
+<script type="text/javascript">
+    document.onkeydown = function (e) {
+        var ev = window.event || e;
+        var code = ev.keyCode || ev.which;
+        if (code == 116) {
+            ev.keyCode ? ev.keyCode = 0 : ev.which = 0;
+            cancelBubble = true;
+            return false;
+        }
+    } //禁止f5刷新
+    document.οncοntextmenu = function () { return false };//禁止右键刷新
+
+    function RunOnBeforeUnload() {
+        window.onbeforeunload = function () {
+            return '请不要刷新页面!';
+        }
+    }
 </script>
 </head>
