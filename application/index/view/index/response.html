@@ -46,9 +46,12 @@
             <a id="descend" onclick="private()">下一题</a>
         </div>
         <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
+
         <input type="hidden" name="choose_id" id="choose_id" value="">
         <input type="hidden" name="topic_id" id="topic_id" value="">
         <input type="hidden" name="choose" id="choose" value="">
+        <input type="hidden" name="answer_id" id="answer_id" value="">
+
     </div>
 
     <nav class="mui-bar mui-bar-tab">
@@ -69,6 +72,36 @@
 <script>
     // 提交/下一题
     function submit() {
+        /*
+        将题插入到数据库
+        */
+        var choose_id = $("#choose_id").val();//所有选项id
+        var topic_id = $("#topic_id").val();//本题的id
+        var choose = $("#choose").val();//用户选择的答案ID
+        var answer_id = $("#answer_id").val();//活动的id
+        $.ajax({
+            type: 'POST',
+            url: "{:url('index/index/in_answer')}",
+            data: {
+                topic_id: topic_id,
+                choose: choose,
+                answer_id: answer_id,
+            },
+            dataType: 'json',
+            success: function (ins) {
+                if(ins[0] == 0){
+                    if(ins[1] == 0){
+                        mui.toast('答题成功，答题错误了😥')
+                    }
+                    if(ins[1] == 1){
+                        mui.toast('答题成功，答题正确😀')
+                    }
+                }
+            },
+            error: function () {
+                console.log("error");
+            }
+        });
         count();//这个是下一题的操作
         jumpurl();//显示题的操作 
         replacement()//重新计时的操作
@@ -100,7 +133,7 @@
     //选择题赋值
     var list = document.querySelector('.mui-table-view.mui-table-view-radio');
     list.addEventListener('selected', function (e) {
-        var choose = e.detail.el.getElementsByTagName('span')[0].innerText;
+        var choose = e.detail.el.getElementsByTagName('i')[0].innerText;
         document.getElementById('choose').value = choose;
     });
 
@@ -116,12 +149,14 @@
     data = sessionStorage.all;
     all = JSON.parse(data);
     // 这是随机的10个数组
+    // console.log(all);
     function jumpurl() {
         var num = localStorage.getItem('count');
         for (i = 0; i < 1; i++) {
             $("#topic").text(all[num].topic_name);
             $("#choose_id").val(all[num].choose_id);
             $("#topic_id").val(all[num].id);
+            $("#answer_id").val(all[num].answer_id);
         }
         //请求选项
         var choose_id = $("#choose_id").val();//所有选项的id
@@ -143,7 +178,7 @@
                     var str_small = '';
                     str_small += String.fromCharCode(ch_small.charCodeAt(0) + i);
                     html += "<li class='mui-table-view-cell'>";
-                    html += "<a class='mui-navigate-right'>" + str_small + "： " + "<span id= 'selected'>" + choose[i].choose_name + "</span>" + "</a>";
+                    html += "<a class='mui-navigate-right'>" + str_small + "： " + "<span id= 'selected'>" + choose[i].choose_name + "</span>" + "<i id = 'choose_id'>" + choose[i].id + "</i>" + "</a>";
                     html += "</li>";
                     // html += "<li class='mui-table-view-cell'>" + str_small + "： " + choose[i].choose_name + "</li>";
                 }
@@ -164,15 +199,15 @@
 
 <!--倒计时问题-->
 <script>
-    var DOwn = 31;
+    var DOwn = 50;
     var Invoking;
     function Initiation() {
         DOwn = DOwn - 1;
         Invoking = setTimeout("Initiation()", 1000);
         if (DOwn == 0) {
+            submit();
             replacement();
             // alert("时间到");//提交题
-
         }
         document.getElementById("timeout").innerHTML = DOwn;
     }
@@ -181,7 +216,7 @@
     }
 
     function replacement() {
-        DOwn = 31;
+        DOwn = 50;
     }
     Initiation();
 
@@ -189,19 +224,6 @@
 
 <!--防止页面刷新的问题-->
 <script type="text/javascript">
-    document.onkeydown = function (e) {
-        var ev = window.event || e;
-        var code = ev.keyCode || ev.which;
-        if (code == 116) {
-            ev.keyCode ? ev.keyCode = 0 : ev.which = 0;
-            cancelBubble = true;
-            return false;
-        }
-    } //禁止f5刷新
-    document.οncοntextmenu = function () {
-        return false
-    };//禁止右键刷新
-
     function RunOnBeforeUnload() {
         window.onbeforeunload = function () {
             return '请不要刷新页面!';
