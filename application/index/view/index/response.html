@@ -32,7 +32,7 @@
         </a>
     </header>
     <div class="mui-content">
-        <h4 class="residue">答题剩余时间：<span id="timeout"></span></h4>  
+        <h4 class="residue">答题剩余时间：<span id="timer" style="color: red;"></span></h4>  
         <div class="topic-name">题目名字：<span id="topic"></span></div>
 
         <ul class="mui-table-view mui-table-view-radio">
@@ -117,14 +117,19 @@
 
 <script type="text/javascript">
     var num = localStorage.getItem('count');//取值，如果没有值为默认值0，如果有值无操作
-    if (num) {
-    } else {
-        window.localStorage.setItem("count", 0);//初始值，第一次进来就是第一题
-    }
 
+    if (num == "null") {
+        window.localStorage.setItem("count", 0);//初始值，第一次进来就是第一题
+    } else {
+
+    }
+    num = localStorage.getItem('count');
     data = sessionStorage.all;
     all = JSON.parse(data);
     // 这是随机的10个数组
+    // console.log(all);
+    // console.log(num);
+
     function jumpurl() {
         for (i = 0; i < 1; i++) {
             $("#topic").text(all[num].topic_name);
@@ -168,6 +173,17 @@
         // setInterval(private, 30000);//30秒后执行下一题
         jumpurl();
         //这里有问题，第一次进来那么他就是第一题，但是我刷新页面就相当于第一次进来永远是第一题。
+
+        var num = localStorage.getItem('count');//取值，如果没有值为默认值0，如果有值无操作
+
+        if (num == "null") {
+            window.localStorage.setItem("count", 0);//初始值，第一次进来就是第一题
+        } else {
+
+        }
+        num = localStorage.getItem('count');
+        console.log(num);
+
     })();
 
 
@@ -177,42 +193,7 @@
 </script>
 
 
-<!--倒计时问题-->
-<script>
-    var timestart = 30;
-    var timestep = -1;
-    var timeID;
-    function timecount() {
-        document.getElementById("timeout").innerHTML = timestart;
-        timestart += timestep;
-        if (timestart < 0) {
-            timestart = 30;
-            //倒计时为0时执行xxxx方法   
-        }
-        timeID = setTimeout("timecount()", 1000);
-    }
-    timecount();
-</script>
 
-<!--防止页面刷新的问题-->
-<script type="text/javascript">
-    // document.onkeydown = function (e) {
-    //     var ev = window.event || e;
-    //     var code = ev.keyCode || ev.which;
-    //     if (code == 116) {
-    //         ev.keyCode ? ev.keyCode = 0 : ev.which = 0;
-    //         cancelBubble = true;
-    //         return false;
-    //     }
-    // } //禁止f5刷新
-    // document.οncοntextmenu = function () {
-    //     return false
-    // };//禁止右键刷新
-    //
-    // function RunOnBeforeUnload() {
-    //     window.onbeforeunload = function () {
-    //         return '请不要刷新页面!';
-    //     }
-    // }
-</script>
+
+
 </head>
