@@ -116,8 +116,11 @@
 
 
 <script type="text/javascript">
-    window.localStorage.setItem("count", 0);//初始值，第一次进来就是第一题
-
+    var num = localStorage.getItem('count');
+    if (num) {
+    } else {
+        window.localStorage.setItem("count", 0);//初始值，第一次进来就是第一题
+    }
     data = sessionStorage.all;
     all = JSON.parse(data);
     // 这是随机的10个数组
