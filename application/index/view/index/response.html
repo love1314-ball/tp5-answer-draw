@@ -39,11 +39,11 @@
         </ul>
 
         <div>
-            <button type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
+            <button onclick="submit()" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
         </div>
         <div class="response-skip">
             <a id="previous-css">上题答案:<span id="previous"></span></a>
-            <a id="descend" href="#">下一题</a>
+            <a id="descend" onclick="private()">下一题</a>
         </div>
         <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面</p>
         <input type="hidden" name="choose_id" id="choose_id" value="">
@@ -66,7 +66,26 @@
 
 </html>
 
-<script type="text/javascript">
+<script>
+    // 提交
+    function submit() {
+        count();
+        jumpurl();
+    }
+</script>
+
+
+<script>
+    //不需要链接只需要将函数再次执行一次即可
+    function private() {
+        count();
+        jumpurl();
+    }
+</script>
+
+
+<script>
+    //计算这是第几题
     function count() {
         // 当前浏览器是否支持localStorage
         if (window.localStorage) {
@@ -83,39 +102,48 @@
             }
         }
     }
+</script>
 
-    count();
+<script>
+    //选择题赋值
+    var list = document.querySelector('.mui-table-view.mui-table-view-radio');
+    list.addEventListener('selected', function (e) {
+        var choose = e.detail.el.getElementsByTagName('span')[0].innerText;
+        document.getElementById('choose').value = choose;
+    });
+
+</script>
+
+
+<script type="text/javascript">
+    var num = localStorage.getItem('count');//取值，如果没有值为默认值0，如果有值无操作
+    if (num) {
+    } else {
+        window.localStorage.setItem("count", 0);//初始值，第一次进来就是第一题
+    }
+
     data = sessionStorage.all;
-    //重新转换为对象 
     all = JSON.parse(data);
-    // console.log(all);
-
+    // 这是随机的10个数组
     function jumpurl() {
-        var num = localStorage.getItem('count');
         for (i = 0; i < 1; i++) {
             $("#topic").text(all[num].topic_name);
             $("#choose_id").val(all[num].choose_id);
             $("#topic_id").val(all[num].id);
-            console.log(all[num]);
         }
-
         //请求选项
-
         var choose_id = $("#choose_id").val();//所有选项的id
         var topic_id = $("#topic_id").val();//题的id
-        // console.log(choose_id);
-        // console.log(topic_id);
         $.ajax({
             type: 'POST',
             url: "{:url('index/index/particular')}",
             data: {
                 choose_id: choose_id,
                 topic_id: topic_id,
-                //将name值在赋给一个名字为names后面接收就要接收$names=$_POST[‘names’];这个样子。
             },
             dataType: 'json',
             success: function (choose) {
-                console.log(choose);
+                // console.log(choose);
                 var html = "";
                 html += '<ul class="mui-table-view mui-table-view-radio">';
                 for (var i = 0; i < choose.length; i++) {
@@ -124,13 +152,11 @@
                     str_small += String.fromCharCode(ch_small.charCodeAt(0) + i);
                     html += "<li class='mui-table-view-cell'>";
                     html += "<a class='mui-navigate-right'>" + str_small + "： " + "<span id= 'selected'>" + choose[i].choose_name + "</span>" + "</a>";
-
                     html += "</li>";
                     // html += "<li class='mui-table-view-cell'>" + str_small + "： " + choose[i].choose_name + "</li>";
                 }
                 html += "</ul>";
                 $(".mui-table-view").html(html); //读取下级的信息
-
             },
             error: function () {
                 console.log("error");
@@ -139,22 +165,12 @@
     }
 
     (function () {
-        // setTimeout('next()', 30000);
-        // setTimeout(count(), 30000);//30秒然后执行记录次数/用不到
+        // setInterval(private, 30000);//30秒后执行下一题
         jumpurl();
+        //这里有问题，第一次进来那么他就是第一题，但是我刷新页面就相当于第一次进来永远是第一题。
     })();
 
 
-    function next() {
-        //30秒后刷新下一题
-        // location = "http://www.tp5-answer-draw.com/index/index/response.html";
-    }
-
-    var list = document.querySelector('.mui-table-view.mui-table-view-radio');
-    list.addEventListener('selected', function (e) {
-        var choose = e.detail.el.getElementsByTagName('span')[0].innerText;
-        document.getElementById('choose').value = choose;
-    });
 
 
 
