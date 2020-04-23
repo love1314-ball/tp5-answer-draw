@@ -36,9 +36,9 @@
 
         {foreach name="all" item="vo" key="ke"}
         {/foreach}
-        <div>题目:{$vo.topic_name}  (单选题)</div>
-        <input type="radio" name="" id="">  A: {$vo.topic_name} 
-        
+        <div>题目:{$vo.topic_name} (单选题)</div>
+        <input type="radio" name="" id=""> A: {$vo.topic_name}
+
         <div class="subject">
             {foreach name="all" item="v" key="k"}
             <a href="{$v.url}">第{$k+1}题</a>
@@ -67,17 +67,16 @@
 
 <script type="text/javascript">
 
-    // localStorage.setItem('arr', arr);
 
+    data = sessionStorage.all;
+    //重新转换为对象 
+    all = JSON.parse(data);
+    console.log(all);
 
-
-    // var alls = localStorage.getItem('arr');
     function jumpurl() {
-        // alls.splice(1,1);
         // location = "https://dev.dcloud.net.cn/mui/ui/#gallery";
     }
 
-    // console.log(alls);
     (function () {
         // setTimeout('jumpurl()', 30000);
         // jumpurl();

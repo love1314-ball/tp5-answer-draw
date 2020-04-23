@@ -42,7 +42,8 @@
 
             {if condition="($v.activity_status == 0) "}
             <li class="mui-table-view-cell mui-media">
-                <a href="{:url('index/index/answer',['id'=>$v.id])}">
+                <a onclick="ids(this)">
+                    <input type="hidden" id="id" name="id" value="{$v.id}">
                     <img class="mui-media-object mui-pull-left" src="{$v.activity_picture}" alt="{$v.activity_name}">
                     <div class="mui-media-body">
                         {$v.activity_name}
@@ -80,3 +81,44 @@
 </body>
 
 </html>
+<script>
+
+    function ids(id) {
+        var answer = id.getElementsByTagName('input')[0].value;
+        mui.toast("请等待");
+        $.ajax({
+            type: 'POST',
+            url: "{:url('index/index/answer')}",
+            data: {
+                answer: answer
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data == 0) {
+                    mui.toast("活动暂时没开启");
+                    return;
+                }
+                if (data == 1) {
+                    mui.toast("活动已过期");
+                    return;
+                } else {
+                    var data = JSON.stringify(data);
+                    //存入 
+                    sessionStorage.all = data;
+                    //读取 
+                   
+                    window.location.href = "{:url('index/index/response')}";
+                }
+            },
+            error: function () {
+                console.log("error");
+            }
+        });
+
+
+    }
+
+
+
+</script>
