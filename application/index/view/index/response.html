@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>答题</title>
     <meta name="viewport"
-        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <link rel="stylesheet" href="/static/index/mui/css/style.css">
     <link rel="stylesheet" href="/static/index/mui/css/mui.min.css">
     <script src="/static/index/mui/js/app.js"></script>
@@ -20,50 +20,51 @@
 
 <body onload="RunOnBeforeUnload()">
 
-    <header class="mui-bar mui-bar-nav">
-        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-        <h1 class="mui-title">答题</h1>
-        <a href="{:url('index/Login/index')}" class="right-head">
-            {empty name="Request.session.user_name"}
-            暂无账号
-            {else /}
-            {$Request.session.user_name}
-            {/empty}
-        </a>
-    </header>
-    <div class="mui-content">
-        <h4 class="residue">答题剩余时间：<span id="timeout"></span></h4>  
-        <div class="topic-name">题目名字：<span id="topic"></span></div>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">答题</h1>
+    <a href="{:url('index/Login/index')}" class="right-head">
+        {empty name="Request.session.user_name"}
+        暂无账号
+        {else /}
+        {$Request.session.user_name}
+        {/empty}
+    </a>
+</header>
+<div class="mui-content">
+    <h4 class="residue">答题剩余时间：<span id="timeout"></span></h4>  
+    <div class="topic-name">题目名字：<span id="topic"></span></div>
 
-        <ul class="mui-table-view mui-table-view-radio">
-        </ul>
+    <ul class="mui-table-view mui-table-view-radio">
+    </ul>
 
-        <div>
-            <button onclick="submit()" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
-        </div>
-        <div class="response-skip">
-            <a id="previous-css">上题答案:<span id="previous"></span></a>
-            <a id="descend" onclick="private()">下一题</a>
-        </div>
-        <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
-
-        <input type="hidden" name="choose_id" id="choose_id" value="">
-        <input type="hidden" name="topic_id" id="topic_id" value="">
-        <input type="hidden" name="choose" id="choose" value="">
-        <input type="hidden" name="answer_id" id="answer_id" value="">
-
+    <div>
+        <button onclick="submit()" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
     </div>
+    <div class="response-skip">
+        <a id="previous-css">上题答案:<span id="previous"></span></a>
+        <a id="descend" onclick="private()">下一题</a>
+    </div>
+    <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
 
-    <nav class="mui-bar mui-bar-tab">
-        <a onclick="home()" class="mui-tab-item mui-active">
-            <span class="mui-icon mui-icon-home"></span>
-            <span class="mui-tab-label">首页</span>
-        </a>
-        <a onclick="mi()" class="mui-tab-item">
-            <span class="mui-icon mui-icon-contact"></span>
-            <span class="mui-tab-label">我的</span>
-        </a>
-    </nav>
+    <input type="hidden" name="choose_id" id="choose_id" value="">
+    <input type="hidden" name="topic_id" id="topic_id" value="">
+    <input type="hidden" name="choose" id="choose" value="">
+    <input type="hidden" name="answer_id" id="answer_id" value="">
+    <input type="hidden" name="answer_uniqueness" id="answer_uniqueness" value="">
+
+</div>
+
+<nav class="mui-bar mui-bar-tab">
+    <a onclick="home()" class="mui-tab-item mui-active">
+        <span class="mui-icon mui-icon-home"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a onclick="mi()" class="mui-tab-item">
+        <span class="mui-icon mui-icon-contact"></span>
+        <span class="mui-tab-label">我的</span>
+    </a>
+</nav>
 
 </body>
 
@@ -75,10 +76,13 @@
         /*
         将题插入到数据库
         */
+        var num = localStorage.getItem('count');
+        var number = num + 1;//用户答题的次数（当为10的时候判断他的正确率是否可以去抽奖）
         var choose_id = $("#choose_id").val();//所有选项id
         var topic_id = $("#topic_id").val();//本题的id
         var choose = $("#choose").val();//用户选择的答案ID
         var answer_id = $("#answer_id").val();//活动的id
+        var answer_uniqueness = $("#answer_uniqueness").val();//唯一标识
         $.ajax({
             type: 'POST',
             url: "{:url('index/index/in_answer')}",
@@ -86,17 +90,23 @@
                 topic_id: topic_id,
                 choose: choose,
                 answer_id: answer_id,
+                number: number,
+                answer_uniqueness:answer_uniqueness
             },
             dataType: 'json',
             success: function (ins) {
-                if(ins[0] == 0){
-                    if(ins[1] == 0){
-                        mui.toast('答题成功，答题错误了😥')
+                // console.log(ins);
+                if (ins[0] == 0) {
+                    if (ins[1] == 0) {
+                        mui.toast('答题成功，答题错误了😥');
                     }
-                    if(ins[1] == 1){
-                        mui.toast('答题成功，答题正确😀')
+                    if (ins[1] == 1) {
+                        mui.toast('答题成功，答题正确😀');
                     }
+                }else{
+                    mui.toast('网络错误');
                 }
+                $("#previous").html(ins[2]);
             },
             error: function () {
                 console.log("error");
@@ -157,6 +167,7 @@
             $("#choose_id").val(all[num].choose_id);
             $("#topic_id").val(all[num].id);
             $("#answer_id").val(all[num].answer_id);
+            $("#answer_uniqueness").val(all[num].uniqueness);
         }
         //请求选项
         var choose_id = $("#choose_id").val();//所有选项的id
@@ -201,6 +212,7 @@
 <script>
     var DOwn = 50;
     var Invoking;
+
     function Initiation() {
         DOwn = DOwn - 1;
         Invoking = setTimeout("Initiation()", 1000);
@@ -211,6 +223,7 @@
         }
         document.getElementById("timeout").innerHTML = DOwn;
     }
+
     function stopCount() {
         clearTimeout(Invoking);
     }
@@ -218,6 +231,7 @@
     function replacement() {
         DOwn = 50;
     }
+
     Initiation();
 
 </script>
