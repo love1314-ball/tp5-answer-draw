@@ -97,7 +97,6 @@
             },
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 if (data == 0) {
                     mui.toast("活动暂时没开启");
                     return;
@@ -105,6 +104,9 @@
                 if (data == 1) {
                     mui.toast("活动已过期");
                     return;
+                }
+                if (data == 2) {
+                    mui.toast("你没有答题机会了，明天再来吧");
                 } else {
                     var data = JSON.stringify(data);
                     //存入 

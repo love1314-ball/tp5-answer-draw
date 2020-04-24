@@ -246,14 +246,22 @@ class Index extends IndexBase
         $data['user_id'] = session('user_id');
         $data['answer_id'] = input('answer');
         $data['add_time'] = date('Y-m-d', time());
+
         $where['user_id'] = $data['user_id'];
         $where['add_time'] = $data['add_time'];
         $where['answer_id'] = $data['answer_id'];
-        $all = Db::name('answer_number')->where($where)->setInc('answer_number', 1);
+        $all = Db::name('answer_number')->where($where)->find();
         if ($all) {
-            return 1;//分享成功
+            if ($all['share_add'] == 0) {
+                //表示你还没有分享
+                $shaer_id = $all['id'];
+                $shaer['answer_number'] = $all['answer_number'] + 1;
+                $shaer['share_add'] = 1;//已经分享
+                $up = Db::name('answer_number')->where('id',$shaer_id)->update($shaer);
+            }
         } else {
             $data['answer_number'] = 1;
+            $data['share_add'] = 1;//已经分享
             $ins = Db::name('answer_number')->insert($data);
             if ($ins) {
                 return 2;
