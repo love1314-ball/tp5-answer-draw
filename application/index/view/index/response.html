@@ -52,7 +52,6 @@
     <input type="hidden" name="choose" id="choose" value="">
     <input type="hidden" name="answer_id" id="answer_id" value="">
     <input type="hidden" name="answer_uniqueness" id="answer_uniqueness" value="">
-    <div onclick="test()">测试</div>
 </div>
 
 <nav class="mui-bar mui-bar-tab">
@@ -113,12 +112,14 @@
                     setTimeout(function() {
                         window.location.href =  "{:url('index/index/draw')}"
                     }, 1000);
+                    return;
                 }
                 if (ins == 7) {
                     mui.alert('对不起你无法抽奖');
                     setTimeout(function() {
                         window.location.href =  "{:url('index/index/index')}"
                     }, 1000);
+                    return;
                 }
                 if (ins[0] == 0) {
                     if (ins[1] == 0) {
@@ -127,9 +128,7 @@
                     if (ins[1] == 1) {
                         mui.toast('答题成功，答题正确😀');
                     }
-                } else {
-                    mui.toast('网络错误');
-                }
+                } 
                 $("#previous").html(ins[2]);
             },
             error: function () {
@@ -234,7 +233,7 @@
 
 <!--倒计时问题-->
 <script>
-    var DOwn = 50;
+    var DOwn = 30;
     var Invoking;
 
     function Initiation() {
@@ -253,7 +252,7 @@
     }
 
     function replacement() {
-        DOwn = 50;
+        DOwn = 30;
     }
 
     Initiation();
