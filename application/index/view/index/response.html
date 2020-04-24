@@ -43,7 +43,7 @@
     </div>
     <div class="response-skip">
         <a id="previous-css">上题答案:<span id="previous"></span></a>
-        <a id="descend" onclick="private()">下一题</a>
+        <a id="descend" onclick="submit()">下一题</a>
     </div>
     <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
 
@@ -52,7 +52,7 @@
     <input type="hidden" name="choose" id="choose" value="">
     <input type="hidden" name="answer_id" id="answer_id" value="">
     <input type="hidden" name="answer_uniqueness" id="answer_uniqueness" value="">
-
+    <div onclick="test()">测试</div>
 </div>
 
 <nav class="mui-bar mui-bar-tab">
@@ -69,6 +69,15 @@
 </body>
 
 </html>
+<!--//测试-->
+<script>
+
+    function test() {
+        alert();
+    }
+
+</script>
+
 
 <script>
     // 提交/下一题
@@ -82,29 +91,34 @@
         var choose_id = $("#choose_id").val();//所有选项id
         var topic_id = $("#topic_id").val();//本题的id
         var choose = $("#choose").val();//用户选择的答案ID
-        var answer_id = $("#answer_id").val();//活动的id
+        var activity_id = $("#answer_id").val();//活动的id
         var answer_uniqueness = $("#answer_uniqueness").val();//唯一标识
         console.log(number);
+        var url = window.location.host;//获取域名
         $.ajax({
             type: 'POST',
             url: "{:url('index/index/in_answer')}",
             data: {
                 topic_id: topic_id,
                 choose: choose,
-                answer_id: answer_id,
+                activity_id: activity_id,
                 number: number,
-                answer_uniqueness:answer_uniqueness
+                answer_uniqueness: answer_uniqueness
             },
             dataType: 'json',
             success: function (ins) {
                 // console.log(ins);
-                if(ins == 6){
+                if (ins == 6) {
                     mui.alert('恭喜你你可以抽奖了');
-                    window.location.href = "{:url('index/index/draw')}";
+                    setTimeout(function() {
+                        window.location.href =  "{:url('index/index/draw')}"
+                    }, 1000);
                 }
-                if(ins == 7){
-                    mui.toast('对不起你无法抽奖');
-                    window.location.href = "{:url('index/index/index')}";
+                if (ins == 7) {
+                    mui.alert('对不起你无法抽奖');
+                    setTimeout(function() {
+                        window.location.href =  "{:url('index/index/index')}"
+                    }, 1000);
                 }
                 if (ins[0] == 0) {
                     if (ins[1] == 0) {
@@ -113,7 +127,7 @@
                     if (ins[1] == 1) {
                         mui.toast('答题成功，答题正确😀');
                     }
-                }else{
+                } else {
                     mui.toast('网络错误');
                 }
                 $("#previous").html(ins[2]);
@@ -247,83 +261,83 @@
 </script>
 
 <!--防止页面刷新的问题-->
-    <script type="text/javascript">
-        document.onkeydown = function(e) {
-            e = window.event || e;
-            var k = e.keyCode;
-            //屏蔽ctrl+R，F5键，ctrl+F5键  F3键！验证
-            if ((e.ctrlKey == true && k == 82) || (k == 116)
-                || (e.ctrlKey == true && k == 116)||k==114) {
-                e.keyCode = 0;
-                alert("当前页面不能刷新！");
-                e.returnValue = false;
-                e.cancelBubble = true;
-                return false;
+<script type="text/javascript">
+    document.onkeydown = function (e) {
+        e = window.event || e;
+        var k = e.keyCode;
+        //屏蔽ctrl+R，F5键，ctrl+F5键  F3键！验证
+        if ((e.ctrlKey == true && k == 82) || (k == 116)
+            || (e.ctrlKey == true && k == 116) || k == 114) {
+            e.keyCode = 0;
+            alert("当前页面不能刷新！");
+            e.returnValue = false;
+            e.cancelBubble = true;
+            return false;
 
-            }
-            if (k == 8) {
-                alert("不能返回或后退！");
-                e.keyCode = 0;
-                e.returnValue = false;
-                return false;
-            }
-            //屏蔽 Ctrl+n   验证可以实现效果
-            if (e.ctrlKey && k == 78){
-                e.keyCode = 0;
-                e.returnValue = false;
-                e.cancelBubble = true;
-                return false;
-            }
-            //屏蔽F11   验证可以实现效果
-            if (k == 122) {
-                e.keyCode = 0;
-                e.returnValue = false;
-                e.cancelBubble = true;
-                return false;
-            }
-            //屏蔽 shift+F10  验证可以实现效果
-            if ((e.shiftKey && k == 121)||(e.ctrlKey && k == 121)){
-                e.keyCode = 0;
-                e.returnValue = false;
-                e.cancelBubble = true;
-                return false;
-            }
+        }
+        if (k == 8) {
+            alert("不能返回或后退！");
+            e.keyCode = 0;
+            e.returnValue = false;
+            return false;
+        }
+        //屏蔽 Ctrl+n   验证可以实现效果
+        if (e.ctrlKey && k == 78) {
+            e.keyCode = 0;
+            e.returnValue = false;
+            e.cancelBubble = true;
+            return false;
+        }
+        //屏蔽F11   验证可以实现效果
+        if (k == 122) {
+            e.keyCode = 0;
+            e.returnValue = false;
+            e.cancelBubble = true;
+            return false;
+        }
+        //屏蔽 shift+F10  验证可以实现效果
+        if ((e.shiftKey && k == 121) || (e.ctrlKey && k == 121)) {
+            e.keyCode = 0;
+            e.returnValue = false;
+            e.cancelBubble = true;
+            return false;
+        }
 
-            //屏蔽Alt+F4
-            if ((e.altKey) && (k== 115)) {
-                window.showModelessDialog("about:blank", "",
-                    "dialogWidth:1px;dialogheight:1px");
-                e.keyCode = 0;
-                e.returnValue = false;
-                e.cancelBubble = true;
-                return false;
-            }
-            //屏蔽 Alt+ 方向键 ← ;屏蔽 Alt+ 方向键 → ！验证
-            if ((e.altKey)
-                && ((k == 37) || (k == 39))) {
-                alert("不准你使用ALT+方向键前进或后退网页！");
-                e.keyCode = 0;
-                e.returnValue = false;
-                e.cancelBubble = true;
-                return false;
-            }
+        //屏蔽Alt+F4
+        if ((e.altKey) && (k == 115)) {
+            window.showModelessDialog("about:blank", "",
+                "dialogWidth:1px;dialogheight:1px");
+            e.keyCode = 0;
+            e.returnValue = false;
+            e.cancelBubble = true;
+            return false;
+        }
+        //屏蔽 Alt+ 方向键 ← ;屏蔽 Alt+ 方向键 → ！验证
+        if ((e.altKey)
+            && ((k == 37) || (k == 39))) {
+            alert("不准你使用ALT+方向键前进或后退网页！");
+            e.keyCode = 0;
+            e.returnValue = false;
+            e.cancelBubble = true;
+            return false;
+        }
 
-        };
+    };
 
-        //屏蔽右键菜单，！验证
-        document.oncontextmenu = function(event) {
-            if (window.event) {
-                event = window.event;
-            }
-            try {
-                var the = event.srcElement;
-                if (!((the.tagName == "INPUT" && the.type.toLowerCase() == "text") || the.tagName == "TEXTAREA")) {
-                    return false;
-                }
-                return true;
-            } catch (e) {
+    //屏蔽右键菜单，！验证
+    document.oncontextmenu = function (event) {
+        if (window.event) {
+            event = window.event;
+        }
+        try {
+            var the = event.srcElement;
+            if (!((the.tagName == "INPUT" && the.type.toLowerCase() == "text") || the.tagName == "TEXTAREA")) {
                 return false;
             }
-        };
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
 </script>
 </head>

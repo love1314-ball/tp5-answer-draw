@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>首页</title>
     <meta name="viewport"
-        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <!-- 这个必须要有  -->
     <link rel="stylesheet" href="/static/index/mui/css/style.css">
     <link rel="stylesheet" href="/static/index/mui/css/mui.min.css">
@@ -22,61 +22,64 @@
 
 <body>
 
-    <header class="mui-bar mui-bar-nav">
-        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-        <h1 class="mui-title">首页</h1>
-        <a href="{:url('index/Login/index')}" class="right-head">
-            {empty name="Request.session.user_name"}
-            暂无账号
-            {else /}
-            {$Request.session.user_name}
-            {/empty}
-        </a>
-    </header>
-    <div class="mui-content">
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">首页</h1>
+    <a href="{:url('index/Login/index')}" class="right-head">
+        {empty name="Request.session.user_name"}
+        暂无账号
+        {else /}
+        {$Request.session.user_name}
+        {/empty}
+    </a>
+</header>
+<div class="mui-content">
 
-        <div class="introduce">点击活动，即可答题然后进行抽奖</div>
+    <div class="introduce">点击活动，即可答题然后进行抽奖</div>
 
-        <ul class="mui-table-view">
-            {foreach name="activity" item="v" empty="$empty"}
+    <ul class="mui-table-view">
+        {foreach name="activity" item="v" empty="$empty"}
 
-            {if condition="($v.activity_status == 0) "}
-            <li class="mui-table-view-cell mui-media">
-                <a onclick="ids(this)">
-                    <input type="hidden" id="id" name="id" value="{$v.id}">
-                    <img class="mui-media-object mui-pull-left" src="{$v.activity_picture}" alt="{$v.activity_name}">
-                    <div class="mui-media-body">
-                        {$v.activity_name}
-                        <p class='mui-ellipsis'>{$v.activity_introduce}</p>
-                    </div>
-                </a>
-            </li>
-            {else /}
-            <li class="mui-table-view-cell mui-media">
-                <a href="#">
-                    <img class="mui-media-object mui-pull-left" src="{$v.activity_picture}" alt="{$v.activity_name}">
-                    <div class="mui-media-body">
-                        {$v.activity_name}
-                        <p class='mui-ellipsis past-red'>活动已经过期</p>
-                    </div>
-                </a>
-            </li>
-            {/if}
+        {if condition="($v.activity_status == 0) "}
+        <li class="mui-table-view-cell mui-media activity">
+            <a class="activity-left" onclick="ids(this)">
+                <input type="hidden" id="id" name="id" value="{$v.id}">
+                <img class="mui-media-object mui-pull-left" src="{$v.activity_picture}" alt="{$v.activity_name}">
+                <div class="mui-media-body">
+                    {$v.activity_name}
+                    <p class='mui-ellipsis'>{$v.activity_introduce}</p>
+                </div>
+            </a>
+            <a onclick="qqFriend(this)" class="activity-right">分享
+            <input type="hidden" name="activity_id" id="activity_id" value="{$v.id}">
+            </a>
+        </li>
+        {else /}
+        <li class="mui-table-view-cell mui-media">
+            <a href="#">
+                <img class="mui-media-object mui-pull-left" src="{$v.activity_picture}" alt="{$v.activity_name}">
+                <div class="mui-media-body">
+                    {$v.activity_name}
+                    <p class='mui-ellipsis past-red'>活动已经过期</p>
+                </div>
+            </a>
+        </li>
+        {/if}
 
-            {/foreach}
-        </ul>
-    </div>
+        {/foreach}
+    </ul>
+</div>
 
-    <nav class="mui-bar mui-bar-tab">
-        <a onclick="home()" class="mui-tab-item mui-active">
-            <span class="mui-icon mui-icon-home"></span>
-            <span class="mui-tab-label">首页</span>
-        </a>
-        <a onclick="mi()" class="mui-tab-item">
-            <span class="mui-icon mui-icon-contact"></span>
-            <span class="mui-tab-label">我的</span>
-        </a>
-    </nav>
+<nav class="mui-bar mui-bar-tab">
+    <a onclick="home()" class="mui-tab-item mui-active">
+        <span class="mui-icon mui-icon-home"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a onclick="mi()" class="mui-tab-item">
+        <span class="mui-icon mui-icon-contact"></span>
+        <span class="mui-tab-label">我的</span>
+    </a>
+</nav>
 
 </body>
 
@@ -86,7 +89,6 @@
     function ids(id) {
         localStorage.removeItem('count');
         var answer = id.getElementsByTagName('input')[0].value;
-        mui.toast("请等待");
         $.ajax({
             type: 'POST',
             url: "{:url('index/index/answer')}",
@@ -115,10 +117,61 @@
                 console.log("error");
             }
         });
-
-
     }
-
-
-
+</script>
+<!--分享功能-->
+<script>
+    function qqFriend(data) {
+        var answer = data.getElementsByTagName('input')[0].value;
+        // console.log(answer);
+        $.ajax({
+            type: 'POST',
+            url: "{:url('index/index/share')}",
+            data: {
+                answer: answer
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    // mui.toast("分享成功");
+                    // return;
+                }
+                if (data == 2) {
+                    // mui.toast("分享成功");
+                    // return;
+                } else {
+                    mui.toast("网络错误");
+                    return;
+                }
+            },
+            error: function () {
+                console.log("error");
+            }
+        });
+        var p = {
+            /*获取URL，可加上来自分享到QQ标识，方便统计*/
+            url: 'https://blog.csdn.net/qq_39135287/article/details/80897631',
+            desc: '',
+            /*分享标题(可选)*/
+            title: 'js实现第三方平台分享功能',
+            /*分享摘要(可选)*/
+            summary: '还不赶紧点击进来观看',
+            /*分享图片(可选)*/
+            pics: '',
+            /*视频地址(可选)*/
+            flash: '',
+            /*分享来源(可选) 如：QQ分享*/
+            site: '',
+            style: '201',
+            width: 32,
+            height: 32
+        };
+        var s = [];
+        for (var i in p) {
+            s.push(i + '=' + encodeURIComponent(p[i] || ''));
+        }
+        var url = "http://connect.qq.com/widget/shareqq/index.html?" + s.join('&');
+        window.open(url);
+    }
 </script>

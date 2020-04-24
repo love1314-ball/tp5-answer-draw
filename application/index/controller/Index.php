@@ -6,7 +6,7 @@ use app\common\controller\IndexBase;
 use think\Db;
 use think\Request;
 use think\Session;
-
+use think\Log;
 //首页
 
 class Index extends IndexBase
@@ -38,14 +38,18 @@ class Index extends IndexBase
         $finish_time = date('Y-m-d', $activity['finish_time']);
         if ($time < $begin_time) {
             return 0;
-            echo '<script>alert("活动暂时没开启");window.history.go(-1); </script>';
             exit;
         }
         if ($time > $finish_time) {
             return 1;
-            echo '<script>alert("活动已过期");window.history.go(-1); </script>';
             exit;
         }
+        //判断你还有没有机会答题
+//        $judge['user_id] = session('user_id');
+//        $judge[''] = $time;
+        Log::record(  $first );
+        exit;
+
         $all = session('topic_all');
         if (!$all) {
             $num = 10;
@@ -71,6 +75,9 @@ class Index extends IndexBase
             $all[$key]['answer_id'] = $id;
             $all[$key]['uniqueness'] = $uniqueness;//生成唯一标识
         }
+
+        //当我点击这个活动以后我就代表已经进行答题了
+        
         return $all;
     }
 
@@ -109,7 +116,7 @@ class Index extends IndexBase
             //题的id
             $data['choose_id'] = input('choose');
             //用户选项的id
-            $data['answer_id'] = input('answer_id');
+            $data['activity_id'] = input('activity_id');
             //活动的id
             $data['user_name'] = session('user_name');
             //用户名
@@ -140,6 +147,13 @@ class Index extends IndexBase
                 $where['add_time'] = $new_time;//必须为当天的时间才可
                 $lottery = Db::name('answer')->where($where)->sum('user_correct');
                 if ($lottery > 8) {
+                    //将可抽奖人的名单放在一个表中
+                    $draw['user_id'] = session('user_id');
+                    $draw['user_name'] = session('user_name');
+                    $draw['activity_id'] = input('activity_id');
+                    $draw['add_time'] = $new_time;
+                    $draw['answer_uniqueness'] = input('answer_uniqueness');
+                    Db::name('activity_draw')->insert($draw);
                     return 6;//可抽奖
                 } else {
                     return 7;
@@ -161,25 +175,40 @@ class Index extends IndexBase
 
     public function test()
     {
-        if ($number = 10) {
-            $new_time = date('Y-m-d', time());
-            $where['answer_uniqueness'] = 1587646206;
-            $where['user_id'] = 2020;
-            $where['add_time'] = $new_time;//必须为当天的时间才可
-            $lottery = Db::name('answer')->where($where)->sum('user_correct');
-            if ($lottery > 8) {
-                return 6;//可抽奖
-            } else {
-                return 7;
-            }
-        }
+
 
     }
 
     //抽奖页面
     public function draw()
     {
-
+        echo "我是抽检";
     }
+
+
+    //分享功能
+    public function share()
+    {
+        $data['user_name'] = session('user_name');
+        $data['user_id'] = session('user_id');
+        $data['activity_id'] = input('answer');
+        $data['add_time'] = date('Y-m-d', time());
+        $where['user_id'] = $data['user_id'];
+        $where['add_time'] = $data['add_time'];
+        $where['activity_id'] = $data['activity_id'];
+        $all = Db::name('share')->where($where)->setInc('share_number', 1);
+        if ($all) {
+            return 1;//分享成功
+        } else {
+            $data['share_number'] = 1;
+            $ins = Db::name('share')->insert($data);
+            if ($ins) {
+                return 2;
+            } else {
+                return 3;
+            }
+        }
+    }
+
 
 }

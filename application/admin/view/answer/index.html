@@ -1,0 +1,25 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">答题规则</div>
+    <div class="layui-card-body">
+        <form action="{:url('admin/Answer/ins')}" class="layui-form" method="post" enctype="multipart/form-data">
+            <div class="layui-form-item">
+                <label class="layui-form-label">答题规则:</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="answer_number" value="{$all.answer_number}" placeholder="设置用户每天答题次数" lay-verify="required"
+                           class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">默认用户可进行答题的次数（除了分享次数）</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" type="submit" lay-submit="">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{/block}
