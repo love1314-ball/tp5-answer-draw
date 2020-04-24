@@ -1,0 +1,65 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-card-header">
+            <form action="{:url('admin/Response/index')}" class="layui-form" method="get">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="user_name" value="" autocomplete="off" placeholder="用户名"
+                            class="layui-input">
+                    </div>
+                    <!-- <div class="layui-input-inline">
+                        <input type="text" name="activity_name" value="" autocomplete="off" placeholder="活动名字"
+                            class="layui-input">
+                    </div> -->
+
+                        <div class="layui-input-inline">
+                            <select name="activity_id" lay-verify="">
+                                <option value="">活动名字</option>
+                                {foreach name="activity" item="v" empty="$empty"}
+                                <option value="{$v.id}">{$v.activity_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+
+
+                    <div class="layui-input-inline" style="width: 50px;">
+                        <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+       
+
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>增加时间</th>
+                    <th>活动名字</th>
+                    <th>唯一单号</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach name="list" item="v" empty="$empty"}
+                <tr>
+                    <td>{$v.answer_id}</td>
+                    <td>{$v.user_name}</td>
+                    <td>{$v.add_time}</td>
+                    <td>{$v.activity_name}</td>
+                    <td>{$v.answer_uniqueness}</td>
+                    <td>
+                        <a href="{:url('admin/Response/particular', ['id' => $v.answer_uniqueness])}"
+                            class="layui-btn layui-btn-xs layui-btn-normal"><i class="fa fa-edit"></i> 详细</a>
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list->render()}</div>
+    </div>
+</div>
+{/block}

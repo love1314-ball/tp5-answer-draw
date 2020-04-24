@@ -1,0 +1,80 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>活动名字</th>
+                    <th>活动开始时间</th>
+                    <th>活动结束时间</th>
+                    <th>图片介绍</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$activity.id}</td>
+                    <td>{$activity.activity_name}</td>
+                    <td>{:date('Y-m-d',$activity.begin_time)}</td>
+                    <td>{:date('Y-m-d',$activity.finish_time)}</td>
+                    <td>
+                        <img src="{$activity.activity_picture}" alt="{$activity.activity_name}" width="45px"
+                            height="45px">
+                    </td>
+                    <td>
+                        {if condition="($activity.activity_status == 0) "}
+                        正常
+                        {else /}
+                        过期
+                        {/if}
+                    </td>
+                </tr>
+              
+            </tbody>
+        </table>
+
+        <br>
+        <br>
+
+        <!-- 详细信息 -->
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>题的id</th>
+                    <th>选择的id</th>
+                    <th>是否选择正确</th>
+                    <th>答题日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach name="list" item="v" empty="$empty"}
+                <tr>
+                    <td>{$v.id}</td>
+                    <td>{$v.user_name}</td>
+                    <td>{$v.topic_id}</td>
+                    <td>
+                        {if condition="($v.choose_id == 0) "}
+                        你没有选择
+                        {else /}
+                        {$v.choose_id}
+                        {/if}
+                    </td>
+                    <td>
+                        {if condition="($v.answer_whether == 0) "}
+                        错误
+                        {else /}
+                        正确
+                        {/if}
+                    </td>
+                    <td>{$v.add_time}</td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
