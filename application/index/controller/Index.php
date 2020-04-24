@@ -92,7 +92,7 @@ class Index extends IndexBase
         if (!$all) {
             $num = 10;
             //需要随机抽取的数据
-            $list = Db::name('topic')->order('id desc')->limit(100)->select();
+            $list = Db::name('topic')->order('id desc')->limit(900)->select();
             //获取数据集 总数100条，可以根据自己的实际情况决定是否需要limit
             shuffle($list);
             //打乱数组
