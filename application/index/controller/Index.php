@@ -7,6 +7,7 @@ use think\Db;
 use think\Request;
 use think\Session;
 use think\Log;
+
 //首页
 
 class Index extends IndexBase
@@ -45,10 +46,47 @@ class Index extends IndexBase
             exit;
         }
         //判断你还有没有机会答题
-//        $judge['user_id] = session('user_id');
-//        $judge[''] = $time;
-        Log::record(  $first );
-        exit;
+        /**
+         * 查找用户id，活动id，当前时间，这些条件都成立，那么我就不是第一次存在，那么就是直接减一次答题机会
+         *    如果不存在先给用户增加默认的答题机会，下面要减去呢。
+         *      先判断然后我再进行减值
+         * 
+        */
+
+
+
+        $answer_set = Db::name('answer_set')->where('id',1)->value('answer_number');
+        //获取规则
+        $where_number['user_id'] = session('user_id');
+        $where_number['add_time'] = date('Y-m-d',time());
+        $where_number['answer_id'] = $id;
+        $user_number = Db::name('answer_number')->where($where_number)->find();
+
+        if ($user_number) {
+            if ($user_number['set_add'] == 0) {
+               //没有给你增加默认答题机会呢现在给你加上去
+               $set_id = $user_number['id'];
+               $data['answer_number'] = $answer_set + $user_number['answer_number'];
+               $data['set_add'] = 1;
+               Db::name('answer_number')->where('id',$set_id)->update();
+            }
+        }else{
+            $inse['user_name'] = session('user_name');
+            $inse['user_id'] = session('user_id');
+            $inse['answer_id'] = input('answer');
+            $inse['set_add'] = 1;
+            $inse['answer_number'] = $answer_set;
+            $inse['add_time'] = date('Y-m-d', time());
+            Db::name('answer_number')->insert($inse);
+        }
+        //给默认答题次数完结
+        //判断一下你是否有资格答题
+        $u_number = Db::name('answer_number')->where($where_number)->value('answer_number');
+        if ($u_number < $answer_set) {
+            return 2;
+            exit;//没有答题资格了
+        }
+        Db::name('answer_number')->where($where_number)->setDec('answer_number',1);//减去一次答题机会
 
         $all = session('topic_all');
         if (!$all) {
@@ -76,8 +114,23 @@ class Index extends IndexBase
             $all[$key]['uniqueness'] = $uniqueness;//生成唯一标识
         }
 
-        //当我点击这个活动以后我就代表已经进行答题了
-        
+        // //当我点击这个活动以后我就代表已经进行答题了（山面查找，如果没有机会那么不会执行到这一步，执行在上面都要进行拦截；）
+        // $answer_number['user_id'] = session('user_id');
+        // $answer_number['user_name'] = session('user_name');
+        // $answer_number['answer_number'] = 1;//每次加一（前提是有，没有那么就是插入）
+        // $answer_number['add_time'] = date('Y-m-d', time());
+        // $answer_number['answer_id'] = $id;//唯一标识
+
+        // $where['user_id'] = $answer_number['user_id'];
+        // $where['add_time'] = $answer_number['add_time'];//必须为当天的时间才可
+        // $where['answer_id'] = $id;
+        // $ins_number = Db::name('answer_number')->where($where)->setInc('answer_number', 1);
+        // if ($ins_number) {
+        //     //插入成功
+        // } else {
+        //     Db::name('answer_number')->insert($answer_number);
+        // }
+
         return $all;
     }
 
@@ -191,17 +244,17 @@ class Index extends IndexBase
     {
         $data['user_name'] = session('user_name');
         $data['user_id'] = session('user_id');
-        $data['activity_id'] = input('answer');
+        $data['answer_id'] = input('answer');
         $data['add_time'] = date('Y-m-d', time());
         $where['user_id'] = $data['user_id'];
         $where['add_time'] = $data['add_time'];
-        $where['activity_id'] = $data['activity_id'];
-        $all = Db::name('share')->where($where)->setInc('share_number', 1);
+        $where['answer_id'] = $data['answer_id'];
+        $all = Db::name('answer_number')->where($where)->setInc('answer_number', 1);
         if ($all) {
             return 1;//分享成功
         } else {
-            $data['share_number'] = 1;
-            $ins = Db::name('share')->insert($data);
+            $data['answer_number'] = 1;
+            $ins = Db::name('answer_number')->insert($data);
             if ($ins) {
                 return 2;
             } else {
