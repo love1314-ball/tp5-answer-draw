@@ -279,40 +279,54 @@ class Index extends IndexBase {
     //抽奖概率问题
 
     public function awarded() {
-        $activity_number = 2;
+        $activity_number = 3;
         $activity_id =  7;
         $where['activity_id'] = $activity_id;
         //活动id
         $where['activity_number'] = $activity_number;
         //抽奖次数
-        $activity_rule = Db::name( 'activity_rule' )->order( 'activity_probability' )->where( $where )->select();
+        $ru = Db::name( 'activity_rule' )->order( 'activity_probability' )->where( $where )->field(' *,activity_probability as scope')->select();//给一个别名不然太长了
         /**
         * 这里写定值，所以我们要设置一个最多最大的概率
         *  这里设置最大为6吧，不然太多不好玩
         *    当然可能没有6个，一样可以运行，但是已有的几个加起来为100
         */
-
-        // for ( $i = 0; $i < count( $activity_rule );
-        // $i++ ) {
-        //     $start = $activity_rule[$i]['activity_probability'];
-        //     $h = $i - 1;
-        //     $probability[$i] = range( $start[$h], $start );
-        //     dump( $start );
+        // dump($ru);exit;
+        $probability1 = range( 1, $ru[0]['scope'] );
+        if ( $ru[1] ) {
+            $probability2 = range( $ru[0]['scope']+1, $ru[1]['scope'] );
+        }
+        if ( $ru[2] ) {
+            $probability3 = range( $ru[1]['scope']+1, $ru[2]['scope']+$ru[0]['scope']+$ru[1]['scope']);
+        }
+        // if ( $ru[3] ) {
+        //     $probability4 = range( $ru[2]['activity_probability']+1, $ru[3]['activity_probability'] );
         // }
-        // dump( $probability );
-
-        // for ( $i = 0; $i < count( $activity_rule ) ;
-        // $i++ ) {
-        //     // 第二层为从$i+1的地方循环到数组最后
-        //     for ( $j = $i+1; $j < count( $activity_rule );
-        //     $j++ ) {
-        //         dump( $activity_rule[$i]['activity_probability'] );
-        //         dump( $activity_rule[$j]['activity_probability'] );
-        //         echo "<hr>";
-        //     }
+        // if ( $ru[4] ) {
+        //     $probability5 = range( $ru[3]['activity_probability']+1, $ru[4]['activity_probability'] );
+        // }
+        // if ( $ru[5] ) {
+        //     $probability6 = range( $ru[4]['activity_probability']+1, $ru[5]['activity_probability'] );
         // }
 
-        dump( $activity_rule );
+        // dump( $probability1 );
+        // dump( $probability2 );
+        // dump( $probability3 );
+        $always = rand( 1, 100 );
+        //设置次数
+        $specific = '';
+        if ( in_array( $always, $probability1 ) ) {
+            $specific =  $ru[0]['reward_name'];
+        }
+        if ( in_array( $always, $probability2 ) ) {
+            $specific =  $ru[1]['reward_name'];
+        }
+        if ( in_array( $always, $probability3 ) ) {
+            $specific =  $ru[2]['reward_name'];
+        }
+        // $this->assign( 'specific', $specific );
+        dump( $specific );
+        exit;
     }
 
     //抽奖概率问题
