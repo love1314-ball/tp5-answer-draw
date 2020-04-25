@@ -6,32 +6,22 @@
             <form action="{:url('admin/Draw/index')}" class="layui-form" method="get">
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
-                        <input type="text" name="user_name" value="" autocomplete="off" placeholder="用户名"
-                            class="layui-input">
+                        <input type="text" name="user_name" value="" autocomplete="off" placeholder="用户名" class="layui-input">
                     </div>
-                    <!-- <div class="layui-input-inline">
-                        <input type="text" name="activity_name" value="" autocomplete="off" placeholder="活动名字"
-                            class="layui-input">
-                    </div> -->
-
-                        <div class="layui-input-inline">
-                            <select name="activity_id" lay-verify="">
-                                <option value="">活动名字</option>
-                                {foreach name="activity" item="v" empty="$empty"}
-                                <option value="{$v.id}">{$v.activity_name}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-
-
+                    <div class="layui-input-inline">
+                        <select name="activity_id" lay-verify="">
+                            <option value="">活动名字</option>
+                            {foreach name="activity" item="v" empty="$empty"}
+                            <option value="{$v.id}">{$v.activity_name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
                     <div class="layui-input-inline" style="width: 50px;">
                         <button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </form>
         </div>
-       
-
         <table class="layui-table layui-form">
             <thead>
                 <tr>

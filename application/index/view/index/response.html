@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>答题</title>
     <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" href="/static/index/mui/css/style.css">
     <link rel="stylesheet" href="/static/index/mui/css/mui.min.css">
     <script src="/static/index/mui/js/app.js"></script>
@@ -20,63 +20,54 @@
 
 <body onload="RunOnBeforeUnload()">
 
-<header class="mui-bar mui-bar-nav">
-    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-    <h1 class="mui-title">答题</h1>
-    <a href="{:url('index/Login/index')}" class="right-head">
-        {empty name="Request.session.user_name"}
-        暂无账号
-        {else /}
-        {$Request.session.user_name}
-        {/empty}
-    </a>
-</header>
-<div class="mui-content">
-    <h4 class="residue">答题剩余时间：<span id="timeout"></span></h4>  
-    <div class="topic-name">题目名字：<span id="topic"></span></div>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">答题</h1>
+        <a href="{:url('index/Login/index')}" class="right-head">
+            {empty name="Request.session.user_name"}
+            暂无账号
+            {else /}
+            {$Request.session.user_name}
+            {/empty}
+        </a>
+    </header>
+    <div class="mui-content">
+        <h4 class="residue">答题剩余时间：<span id="timeout"></span></h4>  
+        <div class="topic-name">题目名字：<span id="topic"></span></div>
 
-    <ul class="mui-table-view mui-table-view-radio">
-    </ul>
+        <ul class="mui-table-view mui-table-view-radio">
+        </ul>
 
-    <div>
-        <button onclick="submit()" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
+        <div>
+            <button onclick="submit()" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
+        </div>
+        <div class="response-skip">
+            <a id="previous-css">上题答案:<span id="previous"></span></a>
+            <a id="descend" onclick="submit()">下一题</a>
+        </div>
+        <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
+
+        <input type="hidden" name="choose_id" id="choose_id" value="">
+        <input type="hidden" name="topic_id" id="topic_id" value="">
+        <input type="hidden" name="choose" id="choose" value="">
+        <input type="hidden" name="answer_id" id="answer_id" value="">
+        <input type="hidden" name="answer_uniqueness" id="answer_uniqueness" value="">
     </div>
-    <div class="response-skip">
-        <a id="previous-css">上题答案:<span id="previous"></span></a>
-        <a id="descend" onclick="submit()">下一题</a>
-    </div>
-    <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
 
-    <input type="hidden" name="choose_id" id="choose_id" value="">
-    <input type="hidden" name="topic_id" id="topic_id" value="">
-    <input type="hidden" name="choose" id="choose" value="">
-    <input type="hidden" name="answer_id" id="answer_id" value="">
-    <input type="hidden" name="answer_uniqueness" id="answer_uniqueness" value="">
-</div>
-
-<nav class="mui-bar mui-bar-tab">
-    <a onclick="home()" class="mui-tab-item mui-active">
-        <span class="mui-icon mui-icon-home"></span>
-        <span class="mui-tab-label">首页</span>
-    </a>
-    <a onclick="mi()" class="mui-tab-item">
-        <span class="mui-icon mui-icon-contact"></span>
-        <span class="mui-tab-label">我的</span>
-    </a>
-</nav>
+    <nav class="mui-bar mui-bar-tab">
+        <a onclick="home()" class="mui-tab-item mui-active">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a onclick="mi()" class="mui-tab-item">
+            <span class="mui-icon mui-icon-contact"></span>
+            <span class="mui-tab-label">我的</span>
+        </a>
+    </nav>
 
 </body>
 
 </html>
-<!--//测试-->
-<script>
-
-    function test() {
-        alert();
-    }
-
-</script>
-
 
 <script>
     // 提交/下一题
@@ -109,15 +100,15 @@
                 // console.log(ins);
                 if (ins == 6) {
                     mui.alert('恭喜你你可以抽奖了');
-                    setTimeout(function() {
-                        window.location.href =  "{:url('index/index/draw')}"
+                    setTimeout(function () {
+                        window.location.href = "{:url('index/index/draw')}"
                     }, 1000);
                     return;
                 }
                 if (ins == 7) {
                     mui.alert('对不起你无法抽奖');
-                    setTimeout(function() {
-                        window.location.href =  "{:url('index/index/index')}"
+                    setTimeout(function () {
+                        window.location.href = "{:url('index/index/index')}"
                     }, 1000);
                     return;
                 }
@@ -128,7 +119,7 @@
                     if (ins[1] == 1) {
                         mui.toast('答题成功，答题正确😀');
                     }
-                } 
+                }
                 $("#previous").html(ins[2]);
             },
             error: function () {
@@ -224,7 +215,6 @@
             }
         });
     }
-
     (function () {
         jumpurl();
     })();
@@ -235,7 +225,6 @@
 <script>
     var DOwn = 30;
     var Invoking;
-
     function Initiation() {
         DOwn = DOwn - 1;
         Invoking = setTimeout("Initiation()", 1000);
@@ -246,17 +235,13 @@
         }
         document.getElementById("timeout").innerHTML = DOwn;
     }
-
     function stopCount() {
         clearTimeout(Invoking);
     }
-
     function replacement() {
         DOwn = 30;
     }
-
     Initiation();
-
 </script>
 
 <!--防止页面刷新的问题-->
@@ -272,7 +257,6 @@
             e.returnValue = false;
             e.cancelBubble = true;
             return false;
-
         }
         if (k == 8) {
             alert("不能返回或后退！");
@@ -320,9 +304,7 @@
             e.cancelBubble = true;
             return false;
         }
-
     };
-
     //屏蔽右键菜单，！验证
     document.oncontextmenu = function (event) {
         if (window.event) {

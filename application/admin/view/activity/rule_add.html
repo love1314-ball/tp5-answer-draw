@@ -32,8 +32,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">奖名字：</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="reward_name" placeholder="输入奖名字" lay-verify="required"
-                        class="layui-input">
+                    <input type="text" name="reward_name" placeholder="输入奖名字" lay-verify="required" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
             </div>
@@ -55,7 +54,6 @@
                     <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(以100为基础)</div>
                 </div>
             </div>
-
 
             {else /}
             <!-- 编辑页面 -->
@@ -79,8 +77,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">几等奖：</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="reward_hierarchy" value="{$val.reward_hierarchy}" placeholder="输入几等奖" lay-verify="required"
-                        class="layui-input">
+                    <input type="number" name="reward_hierarchy" value="{$val.reward_hierarchy}" placeholder="输入几等奖"
+                        lay-verify="required" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">输入本次奖品是几等奖(数字格式)</div>
             </div>
@@ -88,12 +86,11 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">奖名字：</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="reward_name" value="{$val.reward_name}" placeholder="输入奖名字" lay-verify="required"
-                        class="layui-input">
+                    <input type="text" name="reward_name" value="{$val.reward_name}" placeholder="输入奖名字"
+                        lay-verify="required" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
             </div>
-
 
             <div class="quantum">
                 {foreach name="tacitly" item="vo" empty="$empty"}

@@ -6,7 +6,6 @@
         <form action="{:url('admin/topic/ins')}" class="layui-form" method="post" enctype="multipart/form-data">
             {empty name="id"}
             <!-- 增加页面 -->
-
             <div class="layui-form-item maximum">
                 <label class="layui-form-label">题目要求:</label>
                 <div class="layui-input-inline">
@@ -23,10 +22,6 @@
                 </div>
                 <div class="layui-form-mid layui-word-aux">填写本题正确的答案</div>
             </div>
-
-
-
-
             <!-- 增加选项 -->
             <div class="quantum">
                 <div class="layui-form-item">
@@ -41,25 +36,20 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">选项B:</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="choose_name[]" value="" placeholder="填写选项B" 
-                            class="layui-input">
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项B" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">填写选项D选项</div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">选项C:</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="choose_name[]" value="" placeholder="填写选项C" 
-                            class="layui-input">
+                        <input type="text" name="choose_name[]" value="" placeholder="填写选项C" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">填写选项C选项/ -默认为三个选项</div>
                 </div>
             </div>
-
-
             {else /}
             <!-- 编辑页面 -->
-
             <input type="hidden" name="id" value="{$id}" id="">
 
             <div class="layui-form-item maximum">
@@ -89,11 +79,9 @@
                             required="required" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">填写选项</div>
-
                 </div>
                 {/foreach}
             </div>
-
             {/empty}
             <button type="button" class="layui-btn layui-btn-normal left" id="add">增加选项</button>
             <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除选项</button><br><br>
@@ -106,8 +94,6 @@
         </form>
     </div>
 </div>
-
-
 <!-- 增加选项 -->
 <script>
     var number = 0;

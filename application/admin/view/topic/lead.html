@@ -20,7 +20,7 @@
         position: absolute;
         font-size: 100px;
         right: 0;
-        top: 0; 
+        top: 0;
         opacity: 0;
     }
 
@@ -44,10 +44,9 @@
 <div class="layui-card">
     <div class="layui-card-header">导入数据</div>
     <div class="layui-card-body">
-        <form action="{:url('admin/Topic/lead_add')}"  method="post" enctype="multipart/form-data">
-
+        <form action="{:url('admin/Topic/lead_add')}" method="post" enctype="multipart/form-data">
             <div>导入的文件为xlsx表格才可以格式要正确，下面是例子格式：
-            <img src="/static/image/xlsx.png" alt="" width="100%" height="150px">
+                <img src="/static/image/xlsx.png" alt="" width="100%" height="150px">
             </div>
 
             <div>例子下载：
@@ -59,7 +58,7 @@
                     <input class="file" type="file" name="excel">
                 </div>
             </div>
-            
+
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" type="submit" lay-submit="">保存</button>
@@ -69,7 +68,4 @@
         </form>
     </div>
 </div>
-
-
-
 {/block}

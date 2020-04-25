@@ -6,10 +6,12 @@
 			<form action="{:url('admin/User/index')}" class="layui-form" method="get">
 				<div class="layui-form-item">
 					<div class="layui-input-inline">
-						<input type="text" name="user_name" value="" autocomplete="off" placeholder="输入用户名" class="layui-input">
+						<input type="text" name="user_name" value="" autocomplete="off" placeholder="输入用户名"
+							class="layui-input">
 					</div>
 					<div class="layui-input-inline">
-						<input type="number" name="phone" value="" autocomplete="off" placeholder="输入手机号" class="layui-input">
+						<input type="number" name="phone" value="" autocomplete="off" placeholder="输入手机号"
+							class="layui-input">
 					</div>
 					<div class="layui-input-inline" style="width: 50px;">
 						<button class="layui-btn layui-btn-primary ajax-search"><i class="fa fa-search"></i></button>
@@ -42,7 +44,6 @@
 						男
 						{/if}
 					</td>
-
 					<td>
 						<a href="{:url('admin/user/edit', ['id' => $v.id])}"
 							class="layui-btn layui-btn-xs layui-btn-normal"><i class="fa fa-edit"></i> 编辑</a>
