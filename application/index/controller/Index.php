@@ -433,4 +433,11 @@ class Index extends IndexBase {
         return $this->fetch( '' );
     }
 
+
+
+
+
+
+    // 代码还没优化
+
 }
