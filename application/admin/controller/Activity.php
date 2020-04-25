@@ -50,20 +50,19 @@ class Activity extends AdminBase {
     }
 
     public function rule_del()
- {
-        $reward_hierarchy = input( 'id' );
-        $del = Db::name( 'activity_rule' )->where( 'reward_hierarchy', $reward_hierarchy )->select();
-        Log::record( $del );
-        foreach ( $del as $key => $value ) {
-            $del = Db::name( 'activity_rule' )->delete( $value['id'] );
-        }
-        if ( $del ) {
-            $this->success( '删除成功', 'admin/activity/activity_rule' );
-        } else {
-            $this->error( '删除失败' );
-        }
-    }
-
+    {
+           $reward_hierarchy = input( 'id' );
+           $del = Db::name( 'activity_rule' )->where( 'reward_hierarchy', $reward_hierarchy )->select();
+           Log::record( $del );
+           foreach ( $del as $key => $value ) {
+               $del = Db::name( 'activity_rule' )->delete( $value['id'] );
+           }
+           if ( $del ) {
+               $this->success( '删除成功', 'admin/activity/activity_rule' );
+           } else {
+               $this->error( '删除失败' );
+           }
+       }
     public function ins() {
         $activity['activity_name'] = input( 'activity_name' );
         $activity['activity_introduce'] = input( 'activity_introduce' );
@@ -166,47 +165,8 @@ class Activity extends AdminBase {
     public function rule_ins()
  {
         $id = input( 'id' );
-        $activity_rule['activity_id'] = input( 'activity_id' );
-        $reward_hierarchy = input( 'reward_hierarchy/a' );
-        $reward_name = input( 'reward_name/a' );
-        $activity_number = input( 'activity_number/a' );
-        $activity_probability = input( 'activity_probability/a' );
+        $reward_hierarchy = input( 'reward_hierarchy' );
 
-        dump( $reward_hierarchy );
-        dump( $activity_number );
-        dump( $activity_probability );
-        $long = count( $activity_probability );
-        $on = count( $reward_hierarchy );
-        $allot = ( $long/$on );
-
-        for ( $i = 0; $i < $long; $i++ ) {
-
-            $all[] = $i;
-        }
-        $all = array_combine( $all, $reward_hierarchy );
-        dump( $all );
-        exit;
-
-        // array_combine()
-        // for ( $i = 0; $i < $long; $i++ ) {
-        //     $a = 0;
-        //   if ( $i == $a ) {
-        //     $c[] = $reward_hierarchy[$i];
-        //  }
-        //   if ( $i<$allot ) {
-        //    $c[] = $reward_hierarchy[$i];
-        //    $a = 1;
-        //   }
-
-        // dump( $x );
-        // $all[$i]['ci'] = $reward_hierarchy[$j];
-        // $all[$i]['num'] = $activity_number[$i];
-        // $all[$i]['pro'] = $activity_probability[$i];
-        // }
-        echo'****';
-        dump( $c );
-
-        exit;
         $activity_rule['activity_id'] = input( 'activity_id' );
         $activity_rule['reward_hierarchy'] = input( 'reward_hierarchy' );
         $activity_rule['reward_name'] = input( 'reward_name' );
@@ -249,6 +209,7 @@ class Activity extends AdminBase {
         }
 
     }
+
     // 规则编辑
 
     public function edit_rule()
