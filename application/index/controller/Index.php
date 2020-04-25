@@ -278,6 +278,41 @@ class Index extends IndexBase {
 
     //抽奖概率问题
 
+    public function awarded() {
+        $activity_number = 2;
+        $activity_id =  7;
+        $where['activity_id'] = $activity_id;
+        //活动id
+        $where['activity_number'] = $activity_number;
+        //抽奖次数
+        $activity_rule = Db::name( 'activity_rule' )->order( 'activity_probability' )->where( $where )->select();
+        /**
+        * 这里写定值，所以我们要设置一个最多最大的概率
+        *  这里设置最大为6吧，不然太多不好玩
+        *    当然可能没有6个，一样可以运行，但是已有的几个加起来为100
+        */
+        $probability1 = range( 1, $activity_rule[0]['activity_probability'] );
+        if ( $activity_rule[1] ) {
+            $probability2 = range( $activity_rule[0]['activity_probability']+1, $activity_rule[1]['activity_probability'] );
+        }
+        if ( $activity_rule[2] ) {
+            $probability2 = range( $activity_rule[1]['activity_probability']+1, $activity_rule[2]['activity_probability'] );
+        }
+        if ( $activity_rule[3] ) {
+            $probability2 = range( $activity_rule[2]['activity_probability']+1, $activity_rule[3]['activity_probability'] );
+        }
+        if ( $activity_rule[4] ) {
+            $probability2 = range( $activity_rule[3]['activity_probability']+1, $activity_rule[4]['activity_probability'] );
+        }
+        if ( $activity_rule[5] ) {
+            $probability2 = range( $activity_rule[4]['activity_probability']+1, $activity_rule[5]['activity_probability'] );
+        }
+
+        dump( $probability1 );
+    }
+
+    //抽奖概率问题
+
     public function pump() {
         $activity_number = 2;
         $activity_id =  7;
@@ -285,14 +320,12 @@ class Index extends IndexBase {
         //活动id
         $where['activity_number'] = $activity_number;
         //抽奖次数
-
         $activity_rule = Db::name( 'activity_rule' )->order( 'activity_probability' )->where( $where )->select();
         /**
         * 列表了，数据中所有的概率
         *  现在判断你是第几次抽奖，然后去找对应的概率
         *    但是后台概率必须设置好否则概率会出现变动
         */
-
         for ( $i = 0; $i < count( $activity_rule ) ;
         $i++ ) {
             if ( $activity_rule[$i]['activity_probability'] == $activity_rule[0]['activity_probability'] ) {
@@ -313,18 +346,15 @@ class Index extends IndexBase {
             $specific = '';
             if ( in_array( $always, $probability[$i] ) ) {
                 $specific =  $activity_rule[$i]['reward_name'];
-            // dump( $activity_rule[$i]['reward_name'] );
-
+                // dump( $activity_rule[$i]['reward_name'] );
             }
             //这里设置三个抽奖内容，不能多不能少
             // dump( $probability[$i] );
             // dump( $activity_rule[$i] );
         }
         dump( $specific );
-
         exit;
         exit;
-
         $a1 = range( 1, 5 );
         //0.5%百分之0.5，一百个有5次机会
         $a2 = range( 6, 50 );
