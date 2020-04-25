@@ -172,40 +172,23 @@ class Activity extends AdminBase {
         $activity_number = input( 'activity_number/a' );
         $activity_probability = input( 'activity_probability/a' );
 
+        dump( $reward_name );
+        dump( $activity_rule );
         dump( $reward_hierarchy );
         dump( $activity_number );
         dump( $activity_probability );
         $long = count( $activity_probability );
-        $on = count( $reward_hierarchy );
-        $allot = ( $long/$on );
-
+        $allot = $long/3;
+       dump($allot);
         for ( $i = 0; $i < $long; $i++ ) {
-
-            $all[] = $i;
+            $x = $i*3;
+            // dump( $x );
+            // $all[$i]['ci'] = $reward_hierarchy[$j];
+            // $all[$i]['num'] = $activity_number[$i];
+            // $all[$i]['pro'] = $activity_probability[$i];
         }
-        $all = array_combine( $all, $reward_hierarchy );
+       
         dump( $all );
-        exit;
-
-        // array_combine()
-        // for ( $i = 0; $i < $long; $i++ ) {
-        //     $a = 0;
-        //   if ( $i == $a ) {
-        //     $c[] = $reward_hierarchy[$i];
-        //  }
-        //   if ( $i<$allot ) {
-        //    $c[] = $reward_hierarchy[$i];
-        //    $a = 1;
-        //   }
-
-        // dump( $x );
-        // $all[$i]['ci'] = $reward_hierarchy[$j];
-        // $all[$i]['num'] = $activity_number[$i];
-        // $all[$i]['pro'] = $activity_probability[$i];
-        // }
-        echo'****';
-        dump( $c );
-
         exit;
         $activity_rule['activity_id'] = input( 'activity_id' );
         $activity_rule['reward_hierarchy'] = input( 'reward_hierarchy' );

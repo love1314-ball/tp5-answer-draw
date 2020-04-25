@@ -1,12 +1,21 @@
 {extend name="base" /}
 {block name="body"}
+<style>
+    .add-rule-finally {
+        border-bottom-style: outset;
+        margin-bottom: 4%;
+    }
+
+    .first {
+        margin-top: 2%;
+    }
+</style>
 <div class="layui-card">
     <div class="layui-card-header">增加活动</div>
     <div class="layui-card-body">
         <form action="{:url('admin/Activity/rule_ins')}" class="layui-form" method="post" enctype="multipart/form-data">
             {empty name="id"}
             <!-- 增加页面 -->
-
             <div class="layui-form-item maximum">
                 <label class="layui-form-label">选择活动：</label>
                 <div class="layui-input-inline">
@@ -19,40 +28,70 @@
                 </div>
                 <div class="layui-form-mid layui-word-aux">选择一个活动编辑规则</div>
             </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">几等奖：</label>
-                <div class="layui-input-inline">
-                    <input type="number" name="reward_hierarchy" placeholder="输入几等奖" lay-verify="required"
-                        class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">输入本次奖品是几等奖(数字格式)</div>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">奖名字：</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="reward_name" placeholder="输入奖名字" lay-verify="required"
-                        class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
-            </div>
-
-            <!-- 增加规则 -->
+            <!-- 下面公共部分 -->
             <div class="quantum">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">抽奖次数:</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
-                            class="layui-input">
+                <div class="add-rule-finally">
+                    <div class="layui-form-item first">
+                        <label class="layui-form-label">几等奖：</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="reward_hierarchy[]" placeholder="输入几等奖" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">输入本次奖品是几等奖(数字格式)</div>
                     </div>
-                    <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
-                    <label class="layui-form-label">概率:</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
-                            class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">奖名字：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="reward_name[]" placeholder="输入奖名字" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
                     </div>
-                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(以100为基础)</div>
+                    <!-- 增加规则 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">抽奖次数:</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                        <label class="layui-form-label">概率:</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(总值为100)</div>
+                    </div>
+                    <!-- 2 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">抽奖次数:</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                        <label class="layui-form-label">概率:</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(总值为100)</div>
+                    </div>
+                    <!-- 3 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">抽奖次数:</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                        <label class="layui-form-label">概率:</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+                                class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(总值为100)</div>
+                    </div>
                 </div>
             </div>
 
@@ -79,8 +118,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">几等奖：</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="reward_hierarchy" value="{$val.reward_hierarchy}" placeholder="输入几等奖" lay-verify="required"
-                        class="layui-input">
+                    <input type="number" name="reward_hierarchy" value="{$val.reward_hierarchy}" placeholder="输入几等奖"
+                        lay-verify="required" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">输入本次奖品是几等奖(数字格式)</div>
             </div>
@@ -88,8 +127,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">奖名字：</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="reward_name" value="{$val.reward_name}" placeholder="输入奖名字" lay-verify="required"
-                        class="layui-input">
+                    <input type="text" name="reward_name" value="{$val.reward_name}" placeholder="输入奖名字"
+                        lay-verify="required" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
             </div>
@@ -116,8 +155,8 @@
             </div>
 
             {/empty}
-            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加规则</button>
-            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除规则</button><br><br>
+            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加奖项</button>
+            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除奖项</button><br><br>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" type="submit" lay-submit="">保存</button>
@@ -138,7 +177,24 @@
         maximum.appendChild(newly);
         number++;
         newly.innerHTML =
-            ` <div class="layui-form-item">
+            `<div class="add-rule-finally">
+                <div class="layui-form-item first">
+                    <label class="layui-form-label ">几等奖：</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="reward_hierarchy[]" placeholder="输入几等奖" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">输入本次奖品是几等奖(数字格式)</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">奖名字：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="reward_name[]" placeholder="输入奖名字" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">抽奖次数:</label>
                     <div class="layui-input-inline">
                         <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
@@ -150,7 +206,36 @@
                         <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
                             class="layui-input">
                     </div>
-                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率</div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(总值为100)</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">抽奖次数:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                    <label class="layui-form-label">概率:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(总值为100)</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">抽奖次数:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+                    <label class="layui-form-label">概率:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(总值为100)</div>
+                </div>
                 </div>`;
     }
     var reduce = document.querySelector('#reduce'); //找到最后一个按钮
