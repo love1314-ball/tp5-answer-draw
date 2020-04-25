@@ -116,11 +116,9 @@
         });
     }
 </script>
-<!--分享功能-->
 <script>
     function qqFriend(data) {
         var answer = data.getElementsByTagName('input')[0].value;
-        // console.log(answer);
         $.ajax({
             type: 'POST',
             url: "{:url('index/index/share')}",

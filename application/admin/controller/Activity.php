@@ -12,7 +12,6 @@ class Activity extends AdminBase {
 
     public function index() {
         $param = $this->request->param();
-        ///接收input框中的值
         $where = [];
         if ( isset( $param['activity_name'] ) ) {
             $where['activity_name'] = ['like', '%' . $param['activity_name'] . '%'];
@@ -117,12 +116,9 @@ class Activity extends AdminBase {
         }
     }
 
-    //规则设置
-
     public function activity_rule()
  {
         $param = $this->request->param();
-        ///接收input框中的值
         $where = [];
         if ( isset( $param['activity_name'] ) ) {
             $where['activity_name'] = ['like', '%' . $param['activity_name'] . '%'];
@@ -146,8 +142,6 @@ class Activity extends AdminBase {
 
     }
 
-    //增加规则
-
     public function activity_rule_add()
  {
         $id = input( 'id' );
@@ -157,21 +151,17 @@ class Activity extends AdminBase {
         return $this->fetch( 'rule_add' );
 
     }
-    //进库
 
     public function rule_ins()
  {
         $id = input( 'id' );
         $reward_hierarchy = input( 'reward_hierarchy' );
-
         $activity_rule['activity_id'] = input( 'activity_id' );
         $activity_rule['reward_hierarchy'] = input( 'reward_hierarchy' );
         $activity_rule['reward_name'] = input( 'reward_name' );
-
         $activity_rule['add_time'] = time();
         $activity_number = input( 'activity_number/a' );
         $activity_probability =  input( 'activity_probability/a' );
-
         if ( $id ) {
             $where['reward_hierarchy'] = $reward_hierarchy;
             $where['activity_id'] = $id;
@@ -193,7 +183,6 @@ class Activity extends AdminBase {
         } else {
             for ( $i = 0; $i < count( $activity_number ) ;
             $i++ ) {
-
                 $activity_rule['activity_number'] = $activity_number[$i];
                 $activity_rule['activity_probability'] = $activity_probability[$i];
                 $ins = Db::name( 'activity_rule' )->insert( $activity_rule );
@@ -206,8 +195,6 @@ class Activity extends AdminBase {
         }
 
     }
-
-    // 规则编辑
 
     public function edit_rule()
  {

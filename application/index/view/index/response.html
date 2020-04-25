@@ -34,10 +34,8 @@
     <div class="mui-content">
         <h4 class="residue">答题剩余时间：<span id="timeout"></span></h4>  
         <div class="topic-name">题目名字：<span id="topic"></span></div>
-
         <ul class="mui-table-view mui-table-view-radio">
         </ul>
-
         <div>
             <button onclick="submit()" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
         </div>
@@ -46,7 +44,6 @@
             <a id="descend" onclick="submit()">下一题</a>
         </div>
         <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
-
         <input type="hidden" name="choose_id" id="choose_id" value="">
         <input type="hidden" name="topic_id" id="topic_id" value="">
         <input type="hidden" name="choose" id="choose" value="">
@@ -64,17 +61,12 @@
             <span class="mui-tab-label">我的</span>
         </a>
     </nav>
-
 </body>
 
 </html>
 
 <script>
-    // 提交/下一题
     function submit() {
-        /*
-        将题插入到数据库
-        */
         var num = localStorage.getItem('count');
         num = Number(num);
         var number = num + 1;//用户答题的次数（当为10的时候判断他的正确率是否可以去抽奖）
@@ -83,7 +75,6 @@
         var choose = $("#choose").val();//用户选择的答案ID
         var activity_id = $("#answer_id").val();//活动的id
         var answer_uniqueness = $("#answer_uniqueness").val();//唯一标识
-        console.log(number);
         var url = window.location.host;//获取域名
         $.ajax({
             type: 'POST',
@@ -97,7 +88,6 @@
             },
             dataType: 'json',
             success: function (ins) {
-                // console.log(ins);
                 if (ins == 6) {
                     mui.alert('恭喜你你可以抽奖了');
                     setTimeout(function () {
@@ -173,7 +163,6 @@
     data = sessionStorage.all;
     all = JSON.parse(data);
     // 这是随机的10个数组
-    // console.log(all);
     function jumpurl() {
         var num = localStorage.getItem('count');
         for (i = 0; i < 1; i++) {
@@ -195,7 +184,6 @@
             },
             dataType: 'json',
             success: function (choose) {
-                // console.log(choose);
                 var html = "";
                 html += '<ul class="mui-table-view mui-table-view-radio">';
                 for (var i = 0; i < choose.length; i++) {
@@ -205,7 +193,6 @@
                     html += "<li class='mui-table-view-cell'>";
                     html += "<a class='mui-navigate-right'>" + str_small + "： " + "<span id= 'selected'>" + choose[i].choose_name + "</span>" + "<i id = 'choose_id'>" + choose[i].id + "</i>" + "</a>";
                     html += "</li>";
-                    // html += "<li class='mui-table-view-cell'>" + str_small + "： " + choose[i].choose_name + "</li>";
                 }
                 html += "</ul>";
                 $(".mui-table-view").html(html); //读取下级的信息
@@ -231,7 +218,6 @@
         if (DOwn == 0) {
             submit();
             replacement();
-            // alert("时间到");//提交题
         }
         document.getElementById("timeout").innerHTML = DOwn;
     }

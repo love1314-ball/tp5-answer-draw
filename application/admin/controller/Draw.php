@@ -21,8 +21,6 @@ class Draw extends AdminBase {
         if ( isset( $param['activity_id'] ) ) {
             $where['a.activity_id'] = $param['activity_id'];
         }
-
-        // 下拉框内容
         $activity = Db::name( 'activity' )->where( 'activity_status', 0 )->select();
         $this->assign( 'activity', $activity );
         return $this->fetch( 'index', ['list' => model( 'draw' )
@@ -33,7 +31,6 @@ class Draw extends AdminBase {
         ->paginate( config( 'page_number' ) )] );
     }
 
-    // 详细
 
     public function particular()
  {

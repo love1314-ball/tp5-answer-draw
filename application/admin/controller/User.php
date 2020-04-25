@@ -1,7 +1,5 @@
 <?php
-
 namespace app\admin\controller;
-
 use app\common\controller\AdminBase;
 use think\Log;
 use think\Db;
@@ -12,7 +10,6 @@ class User extends AdminBase {
     }
 
     public function index() {
-
         $param = $this->request->param();
         $where = [];
         if ( isset( $param['user_name'] ) ) {
