@@ -235,37 +235,41 @@ class Index extends IndexBase {
 
     public function draw_ins( $activity_id ) {
         // 将活动id存入session我们要用
-        session('activity_id',$activity_id);
+        session( 'activity_id', $activity_id );
         //插入数据
+        $activity_ids = session( 'activity_id' );
+
         $data['user_name'] = session( 'user_name' );
         $data['user_id'] = session( 'user_id' );
         $data['add_time'] = date( 'Y-m-d', time() );
         $data['activity_number'] = 1;
-        $data['activity_id'] = $activity_id;
+        $data['activity_id'] = $activity_ids;
 
         $where['user_id'] = $data['user_id'];
-        $where['activity_id'] = $data['activity_id'];
+        $where['activity_id'] = $activity_ids;
         $where['add_time'] = $data['add_time'];
 
         $draw = Db::name( 'draw' )->where( $where )->find();
-        if ($draw) {
-            $up = Db::name('draw')->where('id',$draw['id'])->setInc('activity_number',);
-        }else{
-            $ins = Db::name('draw')->insert($data);
+        if ( $draw ) {
+            $up = Db::name( 'draw' )->where( 'id', $draw['id'] )->setInc( 'activity_number', 1 );
+        } else {
+            $ins = Db::name( 'draw' )->insert( $data );
         }
     }
 
     //抽奖页面
 
     public function draw() {
-        $activity_id = session('activity_id');
-        $activity = Db::name('activity')->where('id',$activity_id)->find();
-        $activity_rul = Db::name('activity_rule')->where('activity_id',$activity_id)->select();
-        $this->assign('activity',$activity);
-        $this->assign('activity_rul',$activity_rul);
-        // dump($activity);
-        // dump($activity_rul);
-        // exit;
+        $activity_id = session( 'activity_id' );
+        $activity = Db::name( 'activity' )->where( 'id', $activity_id )->find();
+        $activity_rul = Db::name( 'activity_rule' )->Distinct(true)->field('add_time')->where( 'activity_id', $activity_id )->select();
+
+        foreach ($activity_rul as $key => $value) {
+            $activity_rule[] = Db::name('activity_rule')->where('add_time',$value['add_time'])->find();
+        }
+
+        $this->assign( 'activity', $activity );
+        $this->assign( 'activity_rul', $activity_rule );
         return $this->fetch( 'draw' );
     }
 
@@ -306,9 +310,14 @@ class Index extends IndexBase {
     //抽奖概率问题
 
     public function awarded() {
-        $activity_number = 3;
-        $activity_id =  7;
-        //数据库查找
+        $activity_id =  input( 'activity_id' );
+        $win_draw['user_id'] = session( 'user_id' );
+        $win_draw['add_time'] = date( 'Y-m-d', time() );
+        $win_draw['activity_id'] = $activity_id;
+
+        $user = Db::name( 'draw' )->where( $win_draw )->find();
+        $activity_number = $user['activity_number'];
+        //第几次抽奖
 
         $where['activity_id'] = $activity_id;
         //活动id
@@ -341,9 +350,19 @@ class Index extends IndexBase {
         if ( in_array( $always, $probability3 ) ) {
             $specific =  $ru[2]['reward_name'];
         }
-        // $this->assign( 'specific', $specific );
-        dump( $specific );
-        exit;
+
+        if ( $specific == '' ) {
+            $specific = $ru[2]['reward_name'];
+        }
+        $win_draw['user_name'] = session( 'user_name' );
+        $win_draw['draw_name'] = $specific;
+        Db::name( 'win_draw' )->insert( $win_draw );
+        
+        echo("<script>window.alert('恭喜你抽中了---'+'$specific')</script>");
+        $request = Request::instance();
+        $URL_MI = $request->domain();
+        $URL_MI = $URL_MI . "/index/index/index";
+        echo("<script>window.location= '$URL_MI'</script>");
     }
 
     //抽奖概率问题

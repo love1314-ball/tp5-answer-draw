@@ -48,16 +48,20 @@
         <div>
             <table width="100%" class="table" id="tablevalue">
                 <tr>
-                    <th width=50%>时间</th>
-                    <th width=50%>温度</th>
+                    <th width=50%>奖项名</th>
+                    <th width=50%>剩余/个</th>
                 </tr>
+                {foreach name="activity_rul" item="v" empty="$empty"}
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>{$v.reward_name}</td>
+                    <td>{$v.reward_number}</td>
                 </tr>
+                {/foreach}
             </table>
         </div>
-
+        <div>
+            <a href="{:url('index/index/awarded',['activity_id' => $activity.id])}">点我抽奖</a>
+        </div>
     </div>
 
     <nav class="mui-bar mui-bar-tab">
