@@ -104,9 +104,7 @@
                     mui.toast("你没有答题机会了，明天再来吧");
                 } else {
                     var data = JSON.stringify(data);
-                    //存入 
                     sessionStorage.all = data;
-                    //读取 
                     window.location.href = "{:url('index/index/response')}";
                 }
             },
@@ -127,14 +125,13 @@
             },
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 if (data == 1) {
                     // mui.toast("分享成功");
                     // return;
                 }
                 if (data == 2) {
-                    // mui.toast("分享成功");
-                    // return;
+                    mui.alert("分享失败");
+                    return;
                 }
             },
             error: function () {

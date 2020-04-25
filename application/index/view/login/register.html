@@ -112,9 +112,6 @@
         var mypasswd = document.getElementById("password").value;
         var phone = document.getElementById("phone").value;
         var gender = $("input[name='gender']:checked").val();
-
-        //若当前input为空，则alert提醒
-
         if (myname == "") {
             mui.alert("账号不允许为空");
             check = false;
@@ -136,11 +133,6 @@
             return;
         }
         if (myname != "" && mypasswd != "" && phone != "") {
-            console.log(myname);
-            console.log(mypasswd);
-            console.log(phone);
-            console.log(gender);
-
             $.ajax({
                 url: "{:url('index/Login/registration')}",
                 type: 'POST',
@@ -152,6 +144,12 @@
                     gender: gender,
                 },
                 success: function (data) {
+                    if (data == "0") {
+                        mui.toast('用户已存在', {
+                            duration: 'long',
+                            type: 'div'
+                        });
+                    }
                     if (data == "1") {
                         mui.toast('注册成功', {
                             duration: 'long',
@@ -160,12 +158,6 @@
                         setTimeout(function () {
                             window.location.href = "{:url('index/Login/index')}";
                         }, 1000);
-                    }
-                    if (data == "0") {
-                        mui.toast('用户已存在', {
-                            duration: 'long',
-                            type: 'div'
-                        });
                     }
                     if (data == "2") {
                         mui.toast('网络错误', {

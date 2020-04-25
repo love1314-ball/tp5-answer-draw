@@ -88,20 +88,6 @@
             },
             dataType: 'json',
             success: function (ins) {
-                if (ins == 6) {
-                    mui.alert('恭喜你你可以抽奖了');
-                    setTimeout(function () {
-                        window.location.href = "{:url('index/index/draw')}"
-                    }, 1000);
-                    return;
-                }
-                if (ins == 7) {
-                    mui.alert('对不起你无法抽奖');
-                    setTimeout(function () {
-                        window.location.href = "{:url('index/index/index')}"
-                    }, 1000);
-                    return;
-                }
                 if (ins[0] == 0) {
                     if (ins[1] == 0) {
                         mui.toast('答题成功，答题错误了😥');
@@ -109,6 +95,20 @@
                     if (ins[1] == 1) {
                         mui.toast('答题成功，答题正确😀');
                     }
+                }
+                if (ins == 2) {
+                    mui.alert('恭喜你你可以抽奖了');
+                    setTimeout(function () {
+                        window.location.href = "{:url('index/index/draw')}"
+                    }, 1000);
+                    return;
+                }
+                if (ins == 3) {
+                    mui.alert('对不起你无法抽奖');
+                    setTimeout(function () {
+                        window.location.href = "{:url('index/index/index')}"
+                    }, 1000);
+                    return;
                 }
                 $("#previous").html(ins[2]);
             },

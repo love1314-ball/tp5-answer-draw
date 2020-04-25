@@ -136,9 +136,9 @@ class Index extends IndexBase {
                     Db::name( 'activity_draw' )->insert( $draw );
                     $activity_id = input( 'activity_id' );
                     $this->draw_ins( $activity_id );
-                    return 6;
+                    return 2;
                 } else {
-                    return 7;
+                    return 3;
                 }
             }
             $tures = $topic['topic_correct'];
@@ -206,9 +206,9 @@ class Index extends IndexBase {
             $data['share_add'] = 1;
             $ins = Db::name( 'answer_number' )->insert( $data );
             if ( $ins ) {
-                return 2;
+                return 1;
             } else {
-                return 3;
+                return 2;
             }
         }
     }
