@@ -300,12 +300,12 @@ class Index extends IndexBase {
                 //初始第一次，概率问题
             } else {
                 $h = $i - 1;
-                $probability[$i] = range( $activity_rule[$h]['activity_probability'], $activity_rule[$h]['activity_probability'] + $activity_rule[$i]['activity_probability'] );
+                $probability[$i] = range( $activity_rule[$h]['activity_probability'] + 1, $activity_rule[$h]['activity_probability'] + $activity_rule[$i]['activity_probability'] );
                 //中间对的概率
                 if ( $i == count( $activity_rule )-1 ) {
                     //当最后一个的概率
                     $h = $i - 1;
-                    $probability[$i] = range( $activity_rule[$h]['activity_probability'] + $activity_rule[0]['activity_probability'], $activity_rule[$h]['activity_probability'] + $activity_rule[$i]['activity_probability'] + $activity_rule[0]['activity_probability'] );
+                    $probability[$i] = range( $activity_rule[$h]['activity_probability'] + $activity_rule[0]['activity_probability'] + 1, $activity_rule[$h]['activity_probability'] + $activity_rule[$i]['activity_probability'] + $activity_rule[0]['activity_probability'] );
                 }
             }
             $always = rand( 1, 100 );
@@ -313,12 +313,15 @@ class Index extends IndexBase {
             $specific = '';
             if ( in_array( $always, $probability[$i] ) ) {
                 $specific =  $activity_rule[$i]['reward_name'];
+            // dump( $activity_rule[$i]['reward_name'] );
+
             }
             //这里设置三个抽奖内容，不能多不能少
-            dump( $specific );
-            dump( $probability[$i] );
-            dump( $activity_rule[$i] );
+            // dump( $probability[$i] );
+            // dump( $activity_rule[$i] );
         }
+        dump( $specific );
+
         exit;
         exit;
 
