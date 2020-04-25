@@ -14,7 +14,6 @@ class User extends AdminBase {
     public function index() {
 
         $param = $this->request->param();
-        ///接收input框中的值
         $where = [];
         if ( isset( $param['user_name'] ) ) {
             $where['user_name'] = ['like', '%' . $param['user_name'] . '%'];

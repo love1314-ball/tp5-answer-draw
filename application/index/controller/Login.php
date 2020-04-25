@@ -1,7 +1,5 @@
 <?php
-
 namespace app\index\controller;
-
 use app\common\controller\IndexBase;
 use think\Db;
 use think\Log;

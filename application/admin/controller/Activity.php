@@ -1,7 +1,5 @@
 <?php
-
 namespace app\admin\controller;
-
 use app\common\controller\AdminBase;
 use think\Log;
 use think\Db;
@@ -13,7 +11,6 @@ class Activity extends AdminBase {
     }
 
     public function index() {
-
         $param = $this->request->param();
         ///接收input框中的值
         $where = [];
@@ -50,19 +47,20 @@ class Activity extends AdminBase {
     }
 
     public function rule_del()
-    {
-           $reward_hierarchy = input( 'id' );
-           $del = Db::name( 'activity_rule' )->where( 'reward_hierarchy', $reward_hierarchy )->select();
-           Log::record( $del );
-           foreach ( $del as $key => $value ) {
-               $del = Db::name( 'activity_rule' )->delete( $value['id'] );
-           }
-           if ( $del ) {
-               $this->success( '删除成功', 'admin/activity/activity_rule' );
-           } else {
-               $this->error( '删除失败' );
-           }
-       }
+ {
+        $reward_hierarchy = input( 'id' );
+        $del = Db::name( 'activity_rule' )->where( 'reward_hierarchy', $reward_hierarchy )->select();
+        Log::record( $del );
+        foreach ( $del as $key => $value ) {
+            $del = Db::name( 'activity_rule' )->delete( $value['id'] );
+        }
+        if ( $del ) {
+            $this->success( '删除成功', 'admin/activity/activity_rule' );
+        } else {
+            $this->error( '删除失败' );
+        }
+    }
+
     public function ins() {
         $activity['activity_name'] = input( 'activity_name' );
         $activity['activity_introduce'] = input( 'activity_introduce' );
@@ -159,7 +157,6 @@ class Activity extends AdminBase {
         return $this->fetch( 'rule_add' );
 
     }
-
     //进库
 
     public function rule_ins()

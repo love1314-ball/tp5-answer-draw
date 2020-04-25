@@ -115,27 +115,6 @@ class Index extends IndexBase {
             $all[$key]['uniqueness'] = $uniqueness;
             //生成唯一标识
         }
-
-        // //当我点击这个活动以后我就代表已经进行答题了（山面查找，如果没有机会那么不会执行到这一步，执行在上面都要进行拦截;
-        // $answer_number['user_id'] = session( 'user_id' );
-        // $answer_number['user_name'] = session( 'user_name' );
-        // $answer_number['answer_number'] = 1;
-        //每次加一（前提是有，没有那么就是插入）
-        // $answer_number['add_time'] = date( 'Y-m-d', time() );
-        // $answer_number['answer_id'] = $id;
-        //唯一标识
-
-        // $where['user_id'] = $answer_number['user_id'];
-        // $where['add_time'] = $answer_number['add_time'];
-        //必须为当天的时间才可
-        // $where['answer_id'] = $id;
-        // $ins_number = Db::name( 'answer_number' )->where( $where )->setInc( 'answer_number', 1 );
-        // if ( $ins_number ) {
-        //     //插入成功
-        // } else {
-        //     Db::name( 'answer_number' )->insert( $answer_number );
-        // }
-
         return $all;
     }
 
@@ -150,7 +129,6 @@ class Index extends IndexBase {
     public function particular() {
         $choose_id = input( 'choose_id' );
         $topic_id = input( 'topic_id' );
-        //        $choose_id = '489,490,491,492,493';
         $choose_id = explode( ',', $choose_id );
         for ( $i = 0; $i < count( $choose_id );
         $i++ ) {
@@ -165,7 +143,6 @@ class Index extends IndexBase {
 
     public function in_answer() {
         $number = input( 'number' );
-
         if ( $number < 11 ) {
             $data['topic_id'] = input( 'topic_id' );
             //题的id
@@ -364,80 +341,4 @@ class Index extends IndexBase {
         $URL_MI = $URL_MI . "/index/index/index";
         echo("<script>window.location= '$URL_MI'</script>");
     }
-
-    //抽奖概率问题
-
-    public function pump() {
-        $activity_number = 2;
-        $activity_id =  7;
-        $where['activity_id'] = $activity_id;
-        //活动id
-        $where['activity_number'] = $activity_number;
-        //抽奖次数
-        $activity_rule = Db::name( 'activity_rule' )->order( 'activity_probability' )->where( $where )->select();
-        /**
-        * 列表了，数据中所有的概率
-        *  现在判断你是第几次抽奖，然后去找对应的概率
-        *    但是后台概率必须设置好否则概率会出现变动
-        */
-        for ( $i = 0; $i < count( $activity_rule ) ;
-        $i++ ) {
-            if ( $activity_rule[$i]['activity_probability'] == $activity_rule[0]['activity_probability'] ) {
-                $probability[$i] = range( 1, $activity_rule[$i]['activity_probability'] );
-                //初始第一次，概率问题
-            } else {
-                $h = $i - 1;
-                $probability[$i] = range( $activity_rule[$h]['activity_probability'] + 1, $activity_rule[$h]['activity_probability'] + $activity_rule[$i]['activity_probability'] );
-                //中间对的概率
-                if ( $i == count( $activity_rule )-1 ) {
-                    //当最后一个的概率
-                    $h = $i - 1;
-                    $probability[$i] = range( $activity_rule[$h]['activity_probability'] + $activity_rule[0]['activity_probability'] + 1, $activity_rule[$h]['activity_probability'] + $activity_rule[$i]['activity_probability'] + $activity_rule[0]['activity_probability'] );
-                }
-            }
-            $always = rand( 1, 100 );
-            //设置次数
-            $specific = '';
-            if ( in_array( $always, $probability[$i] ) ) {
-                $specific =  $activity_rule[$i]['reward_name'];
-                // dump( $activity_rule[$i]['reward_name'] );
-            }
-            //这里设置三个抽奖内容，不能多不能少
-            // dump( $probability[$i] );
-            // dump( $activity_rule[$i] );
-        }
-        dump( $specific );
-        exit;
-        exit;
-        $a1 = range( 1, 5 );
-        //0.5%百分之0.5，一百个有5次机会
-        $a2 = range( 6, 50 );
-        //44%
-        $a3 = range( 51, 100 );
-        //49%
-        $always = rand( 1, 100 );
-        //设置次数
-        $specific = '';
-        if ( in_array( $always, $a1 ) ) {
-            $specific =  '获得一等奖';
-        }
-        if ( in_array( $always, $a2 ) ) {
-            $specific =  '获得二等奖';
-        }
-        if ( in_array( $always, $a3 ) ) {
-            $specific =  '获得三等奖';
-        }
-        $this->assign( 'specific', $specific );
-        dump( $specific );
-        exit;
-        return $this->fetch( '' );
-    }
-
-
-
-
-
-
-    // 代码还没优化
-
 }

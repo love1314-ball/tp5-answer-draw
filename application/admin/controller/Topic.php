@@ -1,7 +1,5 @@
 <?php
-
 namespace app\admin\controller;
-
 use app\common\controller\AdminBase;
 use think\Log;
 use think\Request;
@@ -14,9 +12,7 @@ class Topic extends AdminBase {
     }
 
     public function index() {
-
         $param = $this->request->param();
-        ///接收input框中的值
         $where = [];
         if ( isset( $param['topic_name'] ) ) {
             $where['topic_name'] = ['like', '%' . $param['topic_name'] . '%'];
@@ -33,9 +29,7 @@ class Topic extends AdminBase {
         $choose_id = explode( ',', $data['choose_id'] );
         for ( $i = 0; $i < count( $choose_id );
         $i++ ) {
-
             $choose_all[] = Db::name( 'choose' )->where( 'id', $choose_id[$i] )->find();
-
         }
         $this->assign( 'id', $id );
         $this->assign( 'data', $data );
@@ -63,28 +57,21 @@ class Topic extends AdminBase {
             $all = input();
             $topic['topic_name'] = input( 'topic_name' );
             $topic['topic_correct'] = input( 'topic_correct' );
-
             $choose_id = Db::name( 'topic' )->where( 'id', $id )->value( 'choose_id' );
             $topic_id =  explode( ',', $choose_id );
-            //查询出来选项的id
             for ( $i = 0; $i < count( $topic_id );
             $i++ ) {
                 Db::name( 'choose' )->delete( $topic_id[$i] );
-                //删除数据方便我们下面使用
             }
-
             for ( $z = 0; $z < count( $choose_name ) ;
             $z++ ) {
                 $data['topic_id'] = $id;
                 $data['choose_name'] = $choose_name[$z];
                 $data['add_time'] = time();
                 $choose[] = Db::name( 'choose' )->insertGetId( $data );
-                //选项的id
             }
-
             $new_topic['choose_id'] = implode( ',', $choose );
             $new_topic['topic_name'] = input( 'topic_name' );
-
             //选项表的id
             $where['topic_id'] = $id;
             $where['choose_name'] = $topic['topic_correct'];
@@ -207,27 +194,27 @@ class Topic extends AdminBase {
         }
     }
 
-
     // 下载格式文件
-    public function below(){
-        $file = '/Excel/默认表.xlsx';//文件地址
-        //str_replace为了严谨点嘛，不要也可以
-        $file_lj = str_replace("\\","/",ROOT_PATH.'public');
-        $files = $file_lj.$file;
-        if(!file_exists($files)){
-            return "文件不存在";
-        }else {
-            //打开文件
-            $file1 = fopen($files, "r");
-            //输入文件标签
-            Header("Content-type: application/octet-stream");
-            Header("Accept-Ranges: bytes");
-            Header("Accept-Length: " . filesize($files));
-            Header("Content-Disposition: attachment; filename=例子表.xlsx");
-            echo fread($file1, filesize($files));
-            fclose($file1);
-        }
-   }
 
+    public function below() {
+        $file = '/Excel/默认表.xlsx';
+        //文件地址
+        //str_replace为了严谨点嘛，不要也可以
+        $file_lj = str_replace( '\\', '/', ROOT_PATH.'public' );
+        $files = $file_lj.$file;
+        if ( !file_exists( $files ) ) {
+            return '文件不存在';
+        } else {
+            //打开文件
+            $file1 = fopen( $files, 'r' );
+            //输入文件标签
+            Header( 'Content-type: application/octet-stream' );
+            Header( 'Accept-Ranges: bytes' );
+            Header( 'Accept-Length: ' . filesize( $files ) );
+            Header( 'Content-Disposition: attachment; filename=例子表.xlsx' );
+            echo fread( $file1, filesize( $files ) );
+            fclose( $file1 );
+        }
+    }
 
 }
