@@ -291,24 +291,28 @@ class Index extends IndexBase {
         *  这里设置最大为6吧，不然太多不好玩
         *    当然可能没有6个，一样可以运行，但是已有的几个加起来为100
         */
-        $probability1 = range( 1, $activity_rule[0]['activity_probability'] );
-        if ( $activity_rule[1] ) {
-            $probability2 = range( $activity_rule[0]['activity_probability']+1, $activity_rule[1]['activity_probability'] );
-        }
-        if ( $activity_rule[2] ) {
-            $probability2 = range( $activity_rule[1]['activity_probability']+1, $activity_rule[2]['activity_probability'] );
-        }
-        if ( $activity_rule[3] ) {
-            $probability2 = range( $activity_rule[2]['activity_probability']+1, $activity_rule[3]['activity_probability'] );
-        }
-        if ( $activity_rule[4] ) {
-            $probability2 = range( $activity_rule[3]['activity_probability']+1, $activity_rule[4]['activity_probability'] );
-        }
-        if ( $activity_rule[5] ) {
-            $probability2 = range( $activity_rule[4]['activity_probability']+1, $activity_rule[5]['activity_probability'] );
-        }
 
-        dump( $probability1 );
+        // for ( $i = 0; $i < count( $activity_rule );
+        // $i++ ) {
+        //     $start = $activity_rule[$i]['activity_probability'];
+        //     $h = $i - 1;
+        //     $probability[$i] = range( $start[$h], $start );
+        //     dump( $start );
+        // }
+        // dump( $probability );
+
+        // for ( $i = 0; $i < count( $activity_rule ) ;
+        // $i++ ) {
+        //     // 第二层为从$i+1的地方循环到数组最后
+        //     for ( $j = $i+1; $j < count( $activity_rule );
+        //     $j++ ) {
+        //         dump( $activity_rule[$i]['activity_probability'] );
+        //         dump( $activity_rule[$j]['activity_probability'] );
+        //         echo "<hr>";
+        //     }
+        // }
+
+        dump( $activity_rule );
     }
 
     //抽奖概率问题
