@@ -10,8 +10,8 @@
                 <tr>
                     <th>ID</th>
                     <th>活动的名称</th>
-                    <th>抽奖次数</th>
-                    <th>抽奖概率</th>
+                    <th>几等奖</th>
+                    <th>奖名字</th>
                     <th>增加时间</th>
                     <th>操作</th>
                 </tr>
@@ -21,13 +21,12 @@
                 <tr>
                     <td>{$v.r_id}</td>
                     <td>{$v.activity_name}</td>
-                    <td>{$v.activity_number}</td>
-                    <td>{$v.activity_probability}</td>
+                    <td>{$v.reward_hierarchy}</td>
+                    <td>{$v.reward_name}</td>
                     <td>{:date('Y-m-d',$v.add_time)}</td>
                     <td>
-                        <a href="{:url('admin/activity/edit_rule', ['id' => $v.activity_id])}"
-                            class="layui-btn layui-btn-xs layui-btn-normal"><i class="fa fa-edit"></i> 编辑</a>
-                        <a href="{:url('admin/activity/rule_del', ['id' => $v.r_id])}"
+                        <a href="{:url('admin/activity/edit_rule', ['id' => $v.activity_id , 'reward_hierarchy' => $v.reward_hierarchy])}" class="layui-btn layui-btn-xs layui-btn-normal"><i class="fa fa-edit"></i> 编辑</a>
+                        <a href="{:url('admin/activity/rule_del', ['id' => $v.reward_hierarchy])}"
                             class="layui-btn layui-btn-xs layui-btn-danger ajax-delete"><i class="fa fa-trash-o"></i>
                             删除</a>
                     </td>

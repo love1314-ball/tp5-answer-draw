@@ -238,7 +238,8 @@ class Index extends IndexBase {
     //抽奖页面
 
     public function draw() {
-        echo '我是抽检';
+
+        return $this->fetch( 'draw' );
     }
 
     //分享功能
@@ -275,30 +276,27 @@ class Index extends IndexBase {
         }
     }
 
-    public function choujiang() {
-        $all = ["手机","电脑","大牛"];
-     $arr = $this->getRand($all);
-     dump($arr);
-    }
 
-    function getRand( $proArr ) {
-        //传入的为一维数字数组, 此数组中度数字即为相应概率知
-        $result = '';
-        //概率数组的总概率精道度
-        $proSum = 2;
-
-        //概率数组循环
-        foreach ( $proArr as $key => $proCur ) {
-            $randNum = mt_rand( 1, $proSum );
-            if ( $randNum <= $proCur ) {
-                $result = $key;
-                break;
-            } else {
-                $proSum -= $proCur;
-            }
-        }
-        unset ( $proArr );
-        return $result;
-    }
+    //抽奖概率问题
+    public function start()
+    {
+           $a1 = range( 1, 5 );//0.5%百分之0.5，一百个有5次机会
+           $a2 = range( 6, 50 );//44%
+           $a3 = range( 51, 100 );//49%
+   
+           $index = rand( 1, 100 );//设置次数
+           $info = '';
+           if ( in_array( $index, $a1 ) ){
+               $info =  '获得一等奖';
+           }
+           if ( in_array( $index, $a2 ) ){
+               $info =  '获得二等奖';
+           }
+           if ( in_array( $index, $a3 ) ){
+               $info =  '获得三等奖';
+           }
+           $this->assign( 'info', $info );
+           return $this->fetch( 'test' );
+       }
 
 }

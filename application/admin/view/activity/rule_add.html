@@ -20,6 +20,23 @@
                 <div class="layui-form-mid layui-word-aux">选择一个活动编辑规则</div>
             </div>
 
+            <div class="layui-form-item">
+                <label class="layui-form-label">几等奖：</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="reward_hierarchy" placeholder="输入几等奖" lay-verify="required"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">输入本次奖品是几等奖(数字格式)</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">奖名字：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="reward_name" placeholder="输入奖名字" lay-verify="required"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
+            </div>
 
             <!-- 增加规则 -->
             <div class="quantum">
@@ -56,6 +73,27 @@
                 </div>
                 <div class="layui-form-mid layui-word-aux">选择一个活动编辑规则</div>
             </div>
+
+            {foreach name="tacitly" item="val" empty="$empty"}
+            {/foreach}
+            <div class="layui-form-item">
+                <label class="layui-form-label">几等奖：</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="reward_hierarchy" value="{$val.reward_hierarchy}" placeholder="输入几等奖" lay-verify="required"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">输入本次奖品是几等奖(数字格式)</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">奖名字：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="reward_name" value="{$val.reward_name}" placeholder="输入奖名字" lay-verify="required"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">输入本次奖品的名字</div>
+            </div>
+
 
             <div class="quantum">
                 {foreach name="tacitly" item="vo" empty="$empty"}

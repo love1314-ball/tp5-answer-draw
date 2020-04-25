@@ -51,8 +51,12 @@ class Activity extends AdminBase {
 
     public function rule_del()
  {
-        $id = input( 'id' );
-        $del = Db::name( 'activity_rule' )->delete( $id );
+        $reward_hierarchy = input( 'id' );
+        $del = Db::name( 'activity_rule' )->where( 'reward_hierarchy', $reward_hierarchy )->select();
+        Log::record( $del );
+        foreach ( $del as $key => $value ) {
+            $del = Db::name( 'activity_rule' )->delete( $value['id'] );
+        }
         if ( $del ) {
             $this->success( '删除成功', 'admin/activity/activity_rule' );
         } else {
@@ -140,7 +144,7 @@ class Activity extends AdminBase {
         ->group( 'add_time' )
         ->where( $where )
         ->field( 'a.*, w.* , a.id r_id , w.id a_id' )
-        ->order( 'r_id desc' )
+        ->order( 'reward_hierarchy' )
         ->paginate( config( 'page_number' ) )] );
 
     }
@@ -162,15 +166,22 @@ class Activity extends AdminBase {
     public function rule_ins()
  {
         $id = input( 'id' );
+        $reward_hierarchy = input( 'reward_hierarchy' );
+
         $activity_rule['activity_id'] = input( 'activity_id' );
+        $activity_rule['reward_hierarchy'] = input( 'reward_hierarchy' );
+        $activity_rule['reward_name'] = input( 'reward_name' );
+
         $activity_rule['add_time'] = time();
         $activity_number = input( 'activity_number/a' );
         $activity_probability =  input( 'activity_probability/a' );
 
         if ( $id ) {
-            $all = Db::name('activity_rule')->where('activity_id',$id)->select();
-            foreach ($all as $key => $value) {
-               Db::name('activity_rule')->delete($value['id']);
+            $where['reward_hierarchy'] = $reward_hierarchy;
+            $where['activity_id'] = $id;
+            $all = Db::name( 'activity_rule' )->where( $where )->select();
+            foreach ( $all as $key => $value ) {
+                Db::name( 'activity_rule' )->delete( $value['id'] );
             }
             for ( $i = 0; $i < count( $activity_number ) ;
             $i++ ) {
@@ -204,8 +215,11 @@ class Activity extends AdminBase {
     public function edit_rule()
  {
         $id = input( 'id' );
+        $reward_hierarchy = input( 'reward_hierarchy' );
         $data = Db::name( 'activity' )->select();
-        $tacitly = Db::name( 'activity_rule' )->where( 'activity_id', $id )->select();
+        $where['reward_hierarchy'] = $reward_hierarchy;
+        $where['activity_id'] = $id;
+        $tacitly = Db::name( 'activity_rule' )->where( $where )->select();
         $approve = Db::name( 'activity' )->where( 'id', $tacitly[0]['activity_id'] )->find();
         $this->assign( 'id', $id );
         $this->assign( 'tacitly', $tacitly );
