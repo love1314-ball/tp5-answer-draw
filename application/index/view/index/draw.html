@@ -15,6 +15,8 @@
     <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
     <!-- 引入mui样式 -->
     <!-- 自己的样式 -->
+    <link rel="stylesheet" href="/static/index/my/draw.css">
+
 </head>
 
 <body>
@@ -31,15 +33,31 @@
         </a>
     </header>
     <div class="mui-content">
-        <div class="lunbo">
-            <!-- <img class="lunbo-img" src="img/shouye1.png" /> -->
-            <div class="mui-slider">
-                <div class="mui-slider-group mui-slider-loop">
-                </div>
-                <div class="mui-slider-indicator">
-                </div>
-            </div>
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell mui-media">
+                <a href="javascript:;">
+                    <img class="mui-media-object mui-pull-left" src="{$activity.activity_picture}">
+                    <div class="mui-media-body">
+                        活动名字：{$activity.activity_name}
+                        <p class='mui-ellipsis'>活动介绍：{$activity.activity_introduce}</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+
+        <div>
+            <table width="100%" class="table" id="tablevalue">
+                <tr>
+                    <th width=50%>时间</th>
+                    <th width=50%>温度</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
         </div>
+
     </div>
 
     <nav class="mui-bar mui-bar-tab">
@@ -56,4 +74,3 @@
 </body>
 
 </html>
-

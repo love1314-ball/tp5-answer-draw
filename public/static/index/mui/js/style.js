@@ -1,6 +1,10 @@
 function home() {
-    window.location.href = "{:url('index/index/index)}";   
+    var my_url_commonality =  window.location.host;
+    var my_home = "http://" + my_url_commonality + "/index/index/index";
+    window.location.href = my_home;
 }
 function mi() {
-    window.location.href = "{:url('index/Mi/index)}";
+    var my_url_commonality =  window.location.host;
+    var my_mi = "http://" + my_url_commonality + "/index/Mi/index";
+    // window.location.href = my_mi;
 }

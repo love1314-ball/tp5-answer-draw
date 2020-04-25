@@ -1,0 +1,20 @@
+.table {
+    border: 1px solid #cad9ea;
+    color: #666;
+    margin-top: 5%;
+}
+
+.table th {
+    background-repeat: repeat-x;
+    height: 30px;
+}
+
+.table td,
+.table th {
+    border: 1px solid #cad9ea;
+    padding: 0 1em 0;
+}
+
+.table tr.alter {
+    background-color: #f5fafe;
+}

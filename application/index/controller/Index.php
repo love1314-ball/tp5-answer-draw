@@ -212,6 +212,8 @@ class Index extends IndexBase {
                     $draw['add_time'] = $new_time;
                     $draw['answer_uniqueness'] = input( 'answer_uniqueness' );
                     Db::name( 'activity_draw' )->insert( $draw );
+                    $activity_id = input( 'activity_id' );
+                    $this->draw_ins( $activity_id );
                     return 6;
                     //可抽奖
                 } else {
@@ -231,14 +233,39 @@ class Index extends IndexBase {
 
     }
 
-    public function test() {
+    public function draw_ins( $activity_id ) {
+        // 将活动id存入session我们要用
+        session('activity_id',$activity_id);
+        //插入数据
+        $data['user_name'] = session( 'user_name' );
+        $data['user_id'] = session( 'user_id' );
+        $data['add_time'] = date( 'Y-m-d', time() );
+        $data['activity_number'] = 1;
+        $data['activity_id'] = $activity_id;
 
+        $where['user_id'] = $data['user_id'];
+        $where['activity_id'] = $data['activity_id'];
+        $where['add_time'] = $data['add_time'];
+
+        $draw = Db::name( 'draw' )->where( $where )->find();
+        if ($draw) {
+            $up = Db::name('draw')->where('id',$draw['id'])->setInc('activity_number',);
+        }else{
+            $ins = Db::name('draw')->insert($data);
+        }
     }
 
     //抽奖页面
 
     public function draw() {
-
+        $activity_id = session('activity_id');
+        $activity = Db::name('activity')->where('id',$activity_id)->find();
+        $activity_rul = Db::name('activity_rule')->where('activity_id',$activity_id)->select();
+        $this->assign('activity',$activity);
+        $this->assign('activity_rul',$activity_rul);
+        // dump($activity);
+        // dump($activity_rul);
+        // exit;
         return $this->fetch( 'draw' );
     }
 
@@ -281,37 +308,27 @@ class Index extends IndexBase {
     public function awarded() {
         $activity_number = 3;
         $activity_id =  7;
+        //数据库查找
+
         $where['activity_id'] = $activity_id;
         //活动id
         $where['activity_number'] = $activity_number;
         //抽奖次数
-        $ru = Db::name( 'activity_rule' )->order( 'activity_probability' )->where( $where )->field(' *,activity_probability as scope')->select();//给一个别名不然太长了
+        $ru = Db::name( 'activity_rule' )->order( 'activity_probability' )->where( $where )->field( ' *,activity_probability as scope' )->select();
+        //给一个别名不然太长了
         /**
         * 这里写定值，所以我们要设置一个最多最大的概率
-        *  这里设置最大为6吧，不然太多不好玩
-        *    当然可能没有6个，一样可以运行，但是已有的几个加起来为100
+        *  这里设置最大为3吧，不然太多不好玩
+        *    当然可能没有3个，一样可以运行，但是已有的几个加起来为100
         */
-        // dump($ru);exit;
         $probability1 = range( 1, $ru[0]['scope'] );
         if ( $ru[1] ) {
             $probability2 = range( $ru[0]['scope']+1, $ru[1]['scope'] );
         }
         if ( $ru[2] ) {
-            $probability3 = range( $ru[1]['scope']+1, $ru[2]['scope']+$ru[0]['scope']+$ru[1]['scope']);
+            $probability3 = range( $ru[1]['scope']+1, $ru[2]['scope']+$ru[0]['scope']+$ru[1]['scope'] );
         }
-        // if ( $ru[3] ) {
-        //     $probability4 = range( $ru[2]['activity_probability']+1, $ru[3]['activity_probability'] );
-        // }
-        // if ( $ru[4] ) {
-        //     $probability5 = range( $ru[3]['activity_probability']+1, $ru[4]['activity_probability'] );
-        // }
-        // if ( $ru[5] ) {
-        //     $probability6 = range( $ru[4]['activity_probability']+1, $ru[5]['activity_probability'] );
-        // }
 
-        // dump( $probability1 );
-        // dump( $probability2 );
-        // dump( $probability3 );
         $always = rand( 1, 100 );
         //设置次数
         $specific = '';
