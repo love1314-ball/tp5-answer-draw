@@ -52,7 +52,7 @@
                         <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
                             class="layui-input">
                     </div>
-                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率(小数格式)</div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(以100为基础)</div>
                 </div>
             </div>
 
@@ -109,7 +109,8 @@
                         <input type="text" name="activity_probability[]" value="{$vo.activity_probability}"
                             placeholder="填写概率" lay-verify="required" class="layui-input">
                     </div>
-                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率(小数格式)</div>
+                    <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率%(以100为基础)</div>
+
                 </div>
                 {/foreach}
             </div>
