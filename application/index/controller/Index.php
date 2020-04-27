@@ -216,7 +216,7 @@ class Index extends IndexBase {
     //抽奖
     /**
      * 更改一下规则，现在是几等奖，然后对应的概率，现在我们，让他有空奖，然后奖励换成红包
-     * 
+     *  这个抽奖的次数，生成的概率，直接作废了
      */
     public function awarded() {
         $activity_id =  input( 'activity_id' );
