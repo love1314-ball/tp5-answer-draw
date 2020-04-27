@@ -25,7 +25,6 @@ class Login extends IndexBase
             $phone = $pass['phone'];
             if ( $pass ) {
                 session( 'user_name', $name );
-
                 session( 'user_id', $sid );
                 session( 'user_phone', $phone );
                 return 0;

@@ -64,7 +64,7 @@ class Index extends IndexBase {
         Db::name( 'answer_number' )->where( $where_number )->setDec( 'answer_number', 1 );
         $all = session( 'topic_all' );
         if ( !$all ) {
-            $new_ary = Db::name('topic')->orderRaw('rand()')->limit(10)->select();
+            $new_ary = Db::name( 'topic' )->orderRaw( 'rand()' )->limit( 10 )->select();
             session( 'topic_all', $new_ary );
             $all = session( 'topic_all' );
             unset( $new_ary );
@@ -213,6 +213,11 @@ class Index extends IndexBase {
         }
     }
 
+    //抽奖
+    /**
+     * 更改一下规则，现在是几等奖，然后对应的概率，现在我们，让他有空奖，然后奖励换成红包
+     * 
+     */
     public function awarded() {
         $activity_id =  input( 'activity_id' );
         $win_draw['user_id'] = session( 'user_id' );
