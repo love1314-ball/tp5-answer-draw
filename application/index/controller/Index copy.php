@@ -127,35 +127,14 @@ class Index extends IndexBase {
                 $where['user_id'] = $data['user_id'];
                 $where['add_time'] = $new_time;
                 $lottery = Db::name( 'answer' )->where( $where )->sum( 'user_correct' );
-                if ( $lottery > 7 ) {
-                    if ( $lottery == 8 ) {
-                        $draw_null['right_number'] = 8;
-                        $draw_null['null_probability'] = 24; //20%
-                    }
-
-                    if ( $lottery == 9 ) {
-                        $draw_null['right_number'] = 9;
-                        $draw_null['null_probability'] = 11; //%
-                    }
-
-                    if ( $lottery == 10 ) {
-                        $draw_null['right_number'] = 10;
-                        $draw_null['null_probability'] = 0;
-                    }
-
-                    $activity_id = input( 'activity_id' );
+                if ( $lottery > 8 ) {
                     $draw['user_id'] = session( 'user_id' );
                     $draw['user_name'] = session( 'user_name' );
-                    $draw['activity_id'] = $activity_id;
+                    $draw['activity_id'] = input( 'activity_id' );
                     $draw['add_time'] = $new_time;
                     $draw['answer_uniqueness'] = input( 'answer_uniqueness' );
                     Db::name( 'activity_draw' )->insert( $draw );
-                    $draw_null['user_name'] = session( 'user_name' );
-                    $draw_null['user_id'] = session( 'user_id' );
-                    $draw_null['add_time'] = $new_time;
-                    $draw_null['activity_id'] = $activity_id;
-                    $draw_null_id = Db::name( 'draw_null' )->insertGetId( $draw_null );
-                    session( 'draw_null_id', $draw_null_id );
+                    $activity_id = input( 'activity_id' );
                     $this->draw_ins( $activity_id );
                     return 2;
                 } else {
@@ -238,7 +217,6 @@ class Index extends IndexBase {
     /**
     * 更改一下规则，现在是几等奖，然后对应的概率，现在我们，让他有空奖，然后奖励换成红包
     *  这个抽奖的次数，生成的概率，直接作废了
-    *    根据答题正确率然后在判断你是否有机会得到奖品
     */
 
     public function awarded() {
@@ -258,18 +236,7 @@ class Index extends IndexBase {
         if ( $ru[2] ) {
             $probability3 = range( $ru[1]['scope']+1, $ru[2]['scope']+$ru[0]['scope']+$ru[1]['scope'] );
         }
-        //空奖
-        $draw_null_id = session( 'draw_null_id' );
-        $draw_null = Db::name( 'draw_null' )->where( 'id', $draw_null_id )->find();
-        if ( $draw_null ) {
-            $probability4 = range( 100, 100 + $draw_null['null_probability'] );
-        }
-        // dump( $probability1 );
-        // dump( $probability2 );
-        // dump( $probability3 );
-        // dump( $probability4 );
-        // exit;
-        $always = rand( 1, 100 + $draw_null['null_probability'] );
+        $always = rand( 1, 100 );
         $specific = '';
         if ( in_array( $always, $probability1 ) ) {
             $specific =  $ru[0]['reward_name'];
@@ -280,22 +247,18 @@ class Index extends IndexBase {
         if ( in_array( $always, $probability3 ) ) {
             $specific =  $ru[2]['reward_name'];
         }
-        if ( in_array( $always, $probability4 ) ) {
-            $specific = '谢谢参与';
-        }
         if ( $specific == '' ) {
             $specific = $ru[2]['reward_name'];
         }
         $win_draw['user_name'] = session( 'user_name' );
         $win_draw['draw_name'] = $specific;
         Db::name( 'win_draw' )->insert( $win_draw );
-        echo( "<script>window.alert('恭喜你抽中了---'+'$specific')</script>" );
-        Db::name( 'activity_rule' )->where( 'reward_name', $specific )->setDec( 'reward_number', 1 );
-        // dump( '恭喜你抽中了'.$specific );
-        // exit;
+        // echo( "<script>window.alert('恭喜你抽中了---'+'$specific')</script>" );
+        dump( '恭喜你抽中了'.$specific );
+        exit;
         $request = Request::instance();
         $URL_MI = $request->domain();
         $URL_MI = $URL_MI . '/index/index/index';
-        echo( "<script>window.location= '$URL_MI'</script>" );
+        // echo( "<script>window.location= '$URL_MI'</script>" );
     }
 }

@@ -1,5 +1,6 @@
 {extend name="base" /}
 {block name="body"}
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
 <div class="layui-card">
     <div class="layui-card-header">增加活动</div>
     <div class="layui-card-body">
@@ -113,8 +114,9 @@
             </div>
 
             {/empty}
-            <button type="button" class="layui-btn layui-btn-normal left" id="add">增加规则</button>
-            <button type="button" class="layui-btn layui-btn-danger" id="reduce">删除规则</button><br><br>
+            <input type="hidden" name="poll" id="poll" value="1">
+            <button type="button" class="layui-btn layui-btn-normal left" id="addnumber">增加规则</button>
+            <button type="button" class="layui-btn layui-btn-danger" id="reducenumber">删除规则</button><br><br>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" type="submit" lay-submit="">保存</button>
@@ -127,13 +129,75 @@
 
 <!-- 增加规则 -->
 <script>
-    var number = 0;
+    // var number = 0;
+    // var maximum = document.querySelector('.quantum'); //找到最大的div
+    // var add = document.querySelector('#add'); //找到第三个第一个按钮
+    // add.onclick = function () {
+    //     var newly = document.createElement('div');
+    //     maximum.appendChild(newly);
+    //     number++;
+    //     newly.innerHTML =
+    //         `<div class="layui-form-item">
+    //                 <label class="layui-form-label">抽奖次数:</label>
+    //                 <div class="layui-input-inline">
+    //                     <input type="text" name="activity_number[]" placeholder="填写抽奖次数" lay-verify="required"
+    //                         class="layui-input">
+    //                 </div>
+    //                 <div class="layui-form-mid layui-word-aux">填写抽奖的次数</div>
+    //                 <label class="layui-form-label">概率:</label>
+    //                 <div class="layui-input-inline">
+    //                     <input type="text" name="activity_probability[]" placeholder="填写概率" lay-verify="required"
+    //                         class="layui-input">
+    //                 </div>
+    //                 <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率</div>
+    //             </div>`;
+    // }
+    // var reduce = document.querySelector('#reduce'); //找到最后一个按钮
+    // reduce.onclick = function () {
+    //     var last = maximum.lastElementChild;
+    //     maximum.removeChild(last); //删除节点
+    // }
+    var poll = $("#poll");//写隐藏input框默认值为1 
+    $(function () {
+        var alls = "3";//最大到三个
+        if (poll.val() == 1) {
+            document.getElementById("reducenumber").disabled = true;
+        }
+        if (poll.val() == alls) {
+            document.getElementById("addnumber").disabled = true;
+        }
+        $("#addnumber").click(function () {
+            poll.val(parseInt(poll.val()) + 1);
+            if (poll.val() > alls) {
+                poll.val(parseInt(poll.val()) - 1);
+            }
+            if (poll.val() == alls) {
+                document.getElementById("addnumber").disabled = true;
+            }
+            document.getElementById("reducenumber").disabled = false;
+            addgroup() //执行增加分组函数
+        });
+
+        $("#reducenumber").click(function () {
+            poll.val(parseInt(poll.val()) - 1); //点击减号输入框数值减1
+            if (poll.val() <= 0) {
+                poll.val(parseInt(poll.val()) + 1); //最小值为1
+            }
+            if (poll.val() == 1) {
+                //当我票数框内为1的时候我的减票就不可以使用了
+                document.getElementById("reducenumber").disabled = true;
+            }
+            document.getElementById("addnumber").disabled = false;
+            reducegroup(); //执行减少分组函数
+        });
+    });
+    var number = 0; //声明一个变量为0 //下面用到为了区分name值这里使用
     var maximum = document.querySelector('.quantum'); //找到最大的div
-    var add = document.querySelector('#add'); //找到第三个第一个按钮
-    add.onclick = function () {
-        var newly = document.createElement('div');
-        maximum.appendChild(newly);
-        number++;
+    function addgroup() {
+        //声明增加分组函数
+        var newly = document.createElement('div'); //声明增加的标签是什么
+        maximum.appendChild(newly); //声明在那个标签里面增加
+        number++; //数字增加1 //方便input框的name值不一样
         newly.innerHTML =
             `<div class="layui-form-item">
                     <label class="layui-form-label">抽奖次数:</label>
@@ -149,10 +213,11 @@
                     </div>
                     <div class="layui-form-mid layui-word-aux">抽奖次数对应着概率</div>
                 </div>`;
+        //所要增加的内容
     }
-    var reduce = document.querySelector('#reduce'); //找到最后一个按钮
-    reduce.onclick = function () {
-        var last = maximum.lastElementChild;
+    function reducegroup() {
+        //声明减少一个分组的函数
+        var last = maximum.lastElementChild; //查找maximum中最后的一个div
         maximum.removeChild(last); //删除节点
     }
 </script>
