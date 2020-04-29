@@ -37,16 +37,16 @@
         <ul class="mui-table-view mui-table-view-radio">
         </ul>
         <div>
-            <button onclick="submit()" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
+            <button onclick="submit('1')" type="button" class="mui-btn mui-btn-primary submit">提交本题</button>
         </div>
         <div class="response-skip">
             <a id="previous-css">上题答案:<span id="previous"></span></a>
-            <a id="descend" onclick="submit()">下一题</a>
+            <a id="descend" onclick="submit('1')">下一题</a>
         </div>
         <p class="rule">点击选项即可，规则答题期间请勿“刷新”页面(“如果你刷新页面代表你已经答题，进入下一题”)</p>
         <input type="hidden" name="choose_id" id="choose_id" value="">
         <input type="hidden" name="topic_id" id="topic_id" value="">
-        <input type="hidden" name="choose" id="choose" value="">
+        <input type="text" name="choose" id="choose" value="">
         <input type="hidden" name="answer_id" id="answer_id" value="">
         <input type="hidden" name="answer_uniqueness" id="answer_uniqueness" value="">
     </div>
@@ -66,7 +66,7 @@
 </html>
 
 <script>
-    function submit() {
+    function submit(status) {
         var num = localStorage.getItem('count');
         num = Number(num);
         var number = num + 1;//用户答题的次数（当为10的时候判断他的正确率是否可以去抽奖）
@@ -76,6 +76,13 @@
         var activity_id = $("#answer_id").val();//活动的id
         var answer_uniqueness = $("#answer_uniqueness").val();//唯一标识
         var url = window.location.host;//获取域名
+        if (status == "1") {
+            //这是提交
+            if (choose == "") {
+                mui.toast('你还没有选择');
+                return;
+            }
+        }
         $.ajax({
             type: 'POST',
             url: "{:url('index/index/in_answer')}",
@@ -90,10 +97,10 @@
             success: function (ins) {
                 if (ins[0] == 0) {
                     if (ins[1] == 0) {
-                        mui.toast('答题成功，答题错误了😥');
+                        mui.toast('答题错误');
                     }
                     if (ins[1] == 1) {
-                        mui.toast('答题成功，答题正确😀');
+                        mui.toast('答题正确');
                     }
                 }
                 if (ins == 2) {
@@ -164,6 +171,7 @@
     all = JSON.parse(data);
     // 这是随机的10个数组
     function jumpurl() {
+        $("#choose").val("");
         var num = localStorage.getItem('count');
         for (i = 0; i < 1; i++) {
             $("#topic").text(all[num].topic_name);
@@ -216,7 +224,7 @@
         DOwn = DOwn - 1;
         Invoking = setTimeout("Initiation()", 1000);
         if (DOwn == 0) {
-            submit();
+            submit('0');
             replacement();
         }
         document.getElementById("timeout").innerHTML = DOwn;

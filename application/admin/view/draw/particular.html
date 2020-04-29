@@ -41,17 +41,19 @@
                 <tr>
                     <th>ID</th>
                     <th>用户名</th>
-                    <th>抽奖次数</th>
+                    <th>活动id</th>
                     <th>插入时间</th>
+                    <th>奖名字</th>
                 </tr>
             </thead>
             <tbody>
-                {foreach name="list" item="v" empty="$empty"}
+                {foreach name="win_draw" item="v" empty="$empty"}
                 <tr>
                     <td>{$v.id}</td>
                     <td>{$v.user_name}</td>
-                    <td>{$v.activity_number}</td>
+                    <td>{$v.activity_id}</td>
                     <td>{$v.add_time}</td>
+                    <td>{$v.draw_name}</td>
                 </tr>
                 {/foreach}
             </tbody>
